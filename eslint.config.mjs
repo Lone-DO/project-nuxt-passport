@@ -13,7 +13,7 @@ export default withNuxt(antfu({
     semi: true,
     quotes: 'single',
   },
-  ignores: ['.pnpm-store/**', '**/migrations/*'],
+  ignores: ['.pnpm-store/**', '**/migrations/*', '.github/workflows/**'],
 }, {
   rules: {
     'vue/max-attributes-per-line': ['error', {
