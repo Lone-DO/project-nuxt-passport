@@ -9,6 +9,13 @@
     "source.organizeImports": "never"
   },
 
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  // tailwind plugin targeting
+  "tailwindCSS.experimental.configFile": "./app/assets/css/main.css",
+
   // Silent the stylistic rules in you IDE, but still auto fix them
   "eslint.rules.customizations": [
     { "rule": "style/*", "severity": "off", "fixable": true },
@@ -79,6 +86,7 @@
     "napi",
     "nodelib",
     "Nuxt",
+    "nuxtjs",
     "optionator",
     "pglite",
     "picomatch",
@@ -93,6 +101,7 @@
     "sindresorhus",
     "slidev",
     "sunos",
+    "tabler",
     "tinyexec",
     "tybys",
     "unocss",
