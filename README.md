@@ -116,3 +116,20 @@ Hook to validate **only modified files** for linting problems
 ### ZOD
 
 Schema Validation, currently used for validating `.env` keys before allowing application to initialize.
+
+### Drizzle
+
+#### Requirements
+
+Dev must have a local Turso DB running locally while in `development`
+
+- https://docs.turso.tech/cli/installation
+
+For Windows Users you'll need to have WSL installed, and Virtualization enabled in your BIOS.
+
+1. Launch Ubuntu
+2. Run `turso dev --db-file local.db`
+3. In your Terminal (VsCode, Bash, Ect.) Run `drizzle-kit studio` to open Drizzle studio and directly interact with local database at `https://local.drizzle.studio/`
+
+- https://learn.microsoft.com/en-us/windows/wsl/
+- https://orm.drizzle.team/docs/drizzle-kit-studio
