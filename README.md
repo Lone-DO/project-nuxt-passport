@@ -112,3 +112,7 @@ Git Hooks for validating code before allowing user to commit/push changes to ser
 ### lint-staged
 
 Hook to validate **only modified files** for linting problems
+
+### ZOD
+
+Schema Validation, currently used for validating `.env` keys before allowing application to initialize.
