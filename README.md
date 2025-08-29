@@ -72,4 +72,43 @@ yarn preview
 bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+# Dependencies
+
+## Nuxt Plugins
+
+### @nuxt/icon
+
+Extensive Icon Library, referenced via `<Icon name='host:iconName'`
+
+### @nuxtjs/color-mode
+
+Used for Toggling Page Theme automatically based on toggle state. Modifies root `HTML` attribute `data-theme`
+
+## Tailwind/UI Libraries
+
+### tailwind
+
+`@tailwindcss`, `@tailwindcss/vite` are used for registering Tailwind with vscode intellisense and vite compiler.
+
+```
+  // .vscode/settings.json for tailwindcss extension
+  "tailwindCSS.experimental.configFile": "./app/assets/css/main.css",
+```
+
+### daisyui
+
+Tailwind UI Theme based library (Class based dumb components)
+
+## Utilities
+
+### Eslint
+
+`eslint`, `eslint-plugin-format`, `@antfu/eslint-config`, `@nuxt/eslint`
+
+### Husky
+
+Git Hooks for validating code before allowing user to commit/push changes to server
+
+### lint-staged
+
+Hook to validate **only modified files** for linting problems
