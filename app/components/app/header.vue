@@ -6,6 +6,7 @@
       </nuxt-link>
     </div>
     <div class="navbar-end">
+      <AppThemeToggle />
       <AuthButton />
     </div>
   </header>
