@@ -34,7 +34,7 @@
     "@antfu/eslint-config": "^5.2.1",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@tailwindcss/vite": "^4.1.12",
-    "daisyui": "^5.0.6",
+    "daisyui": "^5.0.54",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9.34.0",
     "eslint-plugin-format": "^1.0.1",
