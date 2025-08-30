@@ -1,14 +1,13 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 
-import db from './db'; // your drizzle instance
+import db from './db';
 import env from './env';
-
-const url = new URL(env.BETTER_AUTH_URL!);
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: 'sqlite', // or "mysql", "sqlite"
+    provider: 'sqlite',
+    debugLogs: true,
   }),
   advanced: {
     database: {
@@ -21,5 +20,4 @@ export const auth = betterAuth({
       clientSecret: env.AUTH_GITHUB_CLIENT_SECRET,
     },
   },
-  trustedOrigins: [url.href],
 });
