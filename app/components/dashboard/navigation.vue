@@ -26,20 +26,20 @@ onMounted(() => {
       <Icon :name="iconName" size="24" />
     </button>
     <nav class="flex flex-col gap-1">
-      <NavButton
+      <NavigationButton
         name="uil:map"
         label="Locations"
         href="/dashboard"
         :show-label="!collapsed"
       />
-      <NavButton
+      <NavigationButton
         name="uil:map-marker-plus"
         label="Add Location"
         href="/dashboard/new"
         :show-label="!collapsed"
       />
       <div class="divider" />
-      <NavButton
+      <NavigationButton
         name="uil:signout"
         label="Sign Out"
         href="/signout"
