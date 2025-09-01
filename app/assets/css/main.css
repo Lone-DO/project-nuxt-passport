@@ -4,3 +4,7 @@
     light --default,
     dark --prefersdark;
 }
+
+:root {
+  --custom-divider-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+}
