@@ -30,7 +30,8 @@ const onSubmit = handleSubmit(async (values) => {
       /** Manually assign API Validation errors as Form Errors */
       setErrors(error.data?.data);
     }
-    submitError.value = error.statusMessage || 'An unknown error occurred.';
+    /** error.data.statusMessage is fallback for PROD captures */
+    submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occurred.';
   }
   finally {
     busy.value = false;
