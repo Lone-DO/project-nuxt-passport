@@ -14,32 +14,32 @@ onMounted(() => {
 
 <template>
   <aside
-    class="bg-base-100 p-1 flex flex-col align-center gap-2 border-r-2 border-(--custom-divider-color) transition-all duration-200 shrink-0"
+    class="p-1 flex flex-col border-r-2 border-(--custom-divider-color) transition-all duration-200"
     :class="{ 'w-16': collapsed, 'w-40': !collapsed }"
   >
     <button
       :class="{ 'justify-end': !collapsed, 'justify-center': collapsed }"
-      class="flex hover:bg-base-300 hover:cursor-pointer w-full"
+      class="mb-1 flex hover:bg-base-300 hover:cursor-pointer"
       :title="`${!collapsed ? 'collapse' : 'expand'} navigation panel`"
       @click="toggleNav"
     >
       <Icon :name="iconName" size="24" />
     </button>
     <nav class="flex flex-col gap-1">
-      <NavButton
+      <NavigationButton
         name="uil:map"
         label="Locations"
         href="/dashboard"
         :show-label="!collapsed"
       />
-      <NavButton
+      <NavigationButton
         name="uil:map-marker-plus"
         label="Add Location"
         href="/dashboard/new"
         :show-label="!collapsed"
       />
       <div class="divider" />
-      <NavButton
+      <NavigationButton
         name="uil:signout"
         label="Sign Out"
         href="/signout"

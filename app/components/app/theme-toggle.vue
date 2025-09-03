@@ -13,7 +13,11 @@ const isToggled = computed({
 
 <template>
   <label class="swap swap-rotate mx-4">
-    <input v-model="isToggled" type="checkbox">
+    <input
+      v-model="isToggled"
+      name="theme"
+      type="checkbox"
+    >
     <Icon class="swap-on" name="tabler:sun" />
     <Icon class="swap-off" name="tabler:moon-filled" />
   </label>
