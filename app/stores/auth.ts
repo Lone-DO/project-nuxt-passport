@@ -1,5 +1,7 @@
 import { createAuthClient } from 'better-auth/vue';
 
+import getCsrfHeaders from '~/lib/get-csrf-headers';
+
 const authClient = createAuthClient();
 
 export const useAuthStore = defineStore('useAuthStore', () => {
@@ -11,8 +13,10 @@ export const useAuthStore = defineStore('useAuthStore', () => {
 
   const user = computed(() => session.value?.data?.user);
   const loading = computed(() => session.value?.isPending);
+
   async function signIn() {
     await authClient.signIn.social({
+      ...getCsrfHeaders(),
       provider: 'github',
       callbackURL: '/dashboard',
       errorCallbackURL: '/error',
@@ -20,7 +24,7 @@ export const useAuthStore = defineStore('useAuthStore', () => {
   }
 
   async function signOut() {
-    await authClient.signOut();
+    await authClient.signOut(getCsrfHeaders());
     setTimeout(() => navigateTo('/'), 1000);
   }
   return {

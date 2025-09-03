@@ -3,6 +3,8 @@ import type { FetchError } from 'ofetch';
 
 import { InsertLocation } from '~/lib/db/schema';
 
+const { $csrfFetch } = useNuxtApp();
+
 const busy = ref(false);
 const submitted = ref(false);
 const submitError = ref<string | null>('');
@@ -14,7 +16,7 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     submitError.value = null;
     busy.value = true;
-    await $fetch('/api/locations', {
+    await $csrfFetch('/api/locations', {
       method: 'post',
       body: values,
     });
