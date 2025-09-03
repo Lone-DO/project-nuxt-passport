@@ -1,5 +1,7 @@
 <script lang='ts' setup>
-const collapsed = ref(true);
+const navStore = useNavigationStore();
+
+const collapsed = ref(false);
 const iconName = computed(() => collapsed.value ? 'uil:arrow-to-right' : 'uil:left-arrow-to-left');
 
 function toggleNav() {
@@ -38,6 +40,20 @@ onMounted(() => {
         href="/dashboard/new"
         :show-label="!collapsed"
       />
+      <client-only>
+        <div v-if="navStore.loading || navStore.items.length" class="divider" />
+        <div v-if="navStore.loading" class="skeleton h-10 w-full" />
+        <template v-else-if="navStore.items.length">
+          <NavigationButton
+            v-for="location in navStore.items"
+            :key="location.id"
+            :name="location.icon"
+            :label="location.name"
+            :href="location.href"
+            :show-label="!collapsed"
+          />
+        </template>
+      </client-only>
       <div class="divider" />
       <NavigationButton
         name="uil:signout"
