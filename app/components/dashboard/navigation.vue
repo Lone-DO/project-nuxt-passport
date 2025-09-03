@@ -14,7 +14,7 @@ onMounted(() => {
 
 <template>
   <aside
-    class="flex flex-col border-r-2 border-(--custom-divider-color) transition-all duration-200"
+    class="p-1 flex flex-col border-r-2 border-(--custom-divider-color) transition-all duration-200"
     :class="{ 'w-16': collapsed, 'w-40': !collapsed }"
   >
     <button
