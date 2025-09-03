@@ -2,10 +2,10 @@
 </script>
 
 <template>
-  <div id="dashboard" class="flex">
+  <section id="dashboard" class="flex w-full">
     <DashboardNavigation />
-    <div class="flex-1 flex justify-center">
+    <div class="flex-1 flex justify-center p-4">
       <NuxtPage />
     </div>
-  </div>
+  </section>
 </template>

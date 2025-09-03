@@ -14,12 +14,12 @@ onMounted(() => {
 
 <template>
   <aside
-    class="bg-base-100 p-1 flex flex-col align-center gap-2 border-r-2 border-(--custom-divider-color) transition-all duration-200 shrink-0"
+    class="flex flex-col border-r-2 border-(--custom-divider-color) transition-all duration-200"
     :class="{ 'w-16': collapsed, 'w-40': !collapsed }"
   >
     <button
       :class="{ 'justify-end': !collapsed, 'justify-center': collapsed }"
-      class="flex hover:bg-base-300 hover:cursor-pointer w-full"
+      class="mb-1 flex hover:bg-base-300 hover:cursor-pointer"
       :title="`${!collapsed ? 'collapse' : 'expand'} navigation panel`"
       @click="toggleNav"
     >
