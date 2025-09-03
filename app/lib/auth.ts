@@ -7,7 +7,7 @@ import env from './env';
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'sqlite',
-    debugLogs: true,
+    debugLogs: false,
   }),
   advanced: {
     database: {
