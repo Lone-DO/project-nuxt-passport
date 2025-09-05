@@ -18,7 +18,15 @@ const isToggled = computed({
       name="theme"
       type="checkbox"
     >
-    <Icon class="swap-on" name="tabler:sun" />
-    <Icon class="swap-off" name="tabler:moon-filled" />
+    <Icon
+      class="swap-on"
+      name="majesticons:sun"
+      size="20"
+    />
+    <Icon
+      class="swap-off"
+      name="majesticons:moon"
+      size="20"
+    />
   </label>
 </template>

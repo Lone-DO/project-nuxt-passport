@@ -2,6 +2,7 @@
 import { useAuthStore } from '~/stores';
 
 const authStore = useAuthStore();
+const appStore = useAppStore();
 </script>
 
 <template>
@@ -17,8 +18,12 @@ const authStore = useAuthStore();
     <ul class="menu dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-sm">
       <li>
         <NuxtLink to="/signout">
-          <Icon name="uil:signout" size="20" />
-          <span>Sign Out</span>
+          <Icon
+            size="20"
+            class="text-(--btn-fg)"
+            :name="appStore.icons.logout"
+          />
+          <span class="text-(--btn-fg)">Sign Out</span>
         </NuxtLink>
       </li>
     </ul>
