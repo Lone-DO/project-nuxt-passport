@@ -17,6 +17,7 @@
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@indoorequal/vue-maplibre-gl": "^8.4.2",
     "@libsql/client": "^0.15.14",
     "@nuxt/eslint": "1.9.0",
     "@nuxt/icon": "2.0.0",
@@ -28,9 +29,11 @@
     "concurrently": "^9.2.1",
     "drizzle-orm": "^0.40.1",
     "drizzle-zod": "^0.7.0",
+    "maplibre-gl": "^5.7.1",
     "nanoid": "^5.1.5",
     "nuxt": "^4.0.3",
     "nuxt-csurf": "1.6.5",
+    "nuxt-maplibre": "1.1.1",
     "pinia": "^3.0.3",
     "slug": "^11.0.0",
     "tailwindcss": "^4.1.12",
