@@ -7,4 +7,5 @@
 
 :root {
   --custom-divider-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  --btn-fg: var(--color-base-content);
 }

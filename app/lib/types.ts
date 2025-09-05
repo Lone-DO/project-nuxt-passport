@@ -9,3 +9,13 @@ declare module 'h3' {
     };
   }
 }
+
+export type LatLongPin = {
+  lat: number;
+  long: number;
+};
+
+export type MapPin = {
+  id: number;
+  label: string;
+} & LatLongPin;

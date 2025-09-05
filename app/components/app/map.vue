@@ -1,12 +1,7 @@
 <script setup lang='ts'>
-import { CENTER_GERMANY } from '~/lib/constants';
+import { useMapStore } from '~/stores/map';
 
-const colorMode = useColorMode();
-const darkMode = '/styles/dark.json';
-const lightMode = 'https://tiles.openfreemap.org/styles/liberty';
-const style = computed(() => colorMode.value === 'dark' ? darkMode : lightMode);
-const center = CENTER_GERMANY;
-const zoom = 5;
+const mapStore = useMapStore();
 </script>
 
 <template>
@@ -16,11 +11,26 @@ const zoom = 5;
     </template>
     <div id="map-client" class="flex-1">
       <MglMap
-        :map-style="style"
-        :center="center"
-        :zoom="zoom"
+        :map-style="mapStore.style"
+        :center="mapStore.center"
+        :zoom="mapStore.zoom"
       >
         <MglNavigationControl />
+        <MglMarker
+          v-for="point in mapStore.pins"
+          :key="point.id"
+          :coordinates="[point.long, point.lat]"
+        >
+          <template #marker>
+            <div class="tooltip tooltip-top" :data-tip="point.label">
+              <Icon
+                size="30"
+                name="majesticons:map-marker-area"
+                class="text-secondary"
+              />
+            </div>
+          </template>
+        </MglMarker>
       </MglMap>
     </div>
   </LazyClientOnly>

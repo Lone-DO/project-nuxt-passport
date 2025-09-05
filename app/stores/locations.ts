@@ -1,3 +1,7 @@
+import type { MapPin } from '~/lib/types';
+
+import { useMapStore } from './map';
+
 export const useLocationStore = defineStore('useLocationStore', () => {
   const {
     data,
@@ -10,20 +14,29 @@ export const useLocationStore = defineStore('useLocationStore', () => {
   const items = computed(() => data.value?.sort((a, b) => a.name.localeCompare(b.name)));
 
   const navigationStore = useNavigationStore();
+  const mapStore = useMapStore();
   effect(() => {
     if (items.value) {
       navigationStore.loading = true;
-      const parsed: NavigationItem[] = [];
+      const navItems: NavigationItem[] = [];
+      const mapPins: MapPin[] = [];
       items.value.forEach((location) => {
-        parsed.push({
+        navItems.push({
           id: `location-${location?.id}`,
           name: location.name,
-          icon: 'uil:map-pin',
+          icon: '',
           href: '#',
         });
+        mapPins.push({
+          id: location.id,
+          label: location.name,
+          lat: location.lat,
+          long: location.long,
+        });
       });
-      navigationStore.items = parsed;
+      navigationStore.items = navItems;
       navigationStore.loading = false;
+      mapStore.pins = mapPins;
     }
   });
 

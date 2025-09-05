@@ -1,8 +1,11 @@
 <script lang='ts' setup>
+const appStore = useAppStore();
 const navStore = useNavigationStore();
 
+const { icons } = storeToRefs(appStore);
+
 const collapsed = ref(false);
-const iconName = computed(() => collapsed.value ? 'uil:arrow-to-right' : 'uil:left-arrow-to-left');
+const collapseIcon = computed(() => collapsed.value ? 'uil:arrow-to-right' : 'uil:left-arrow-to-left');
 
 function toggleNav() {
   collapsed.value = !collapsed.value;
@@ -25,17 +28,17 @@ onMounted(() => {
       :title="`${!collapsed ? 'collapse' : 'expand'} navigation panel`"
       @click="toggleNav"
     >
-      <Icon :name="iconName" size="24" />
+      <Icon :name="collapseIcon" size="24" />
     </button>
     <nav class="flex flex-col gap-1">
       <NavigationButton
-        name="uil:map"
+        :name="icons.map"
         label="Locations"
         href="/dashboard"
         :show-label="!collapsed"
       />
       <NavigationButton
-        name="uil:map-marker-plus"
+        :name="icons.add"
         label="Add Location"
         href="/dashboard/new"
         :show-label="!collapsed"
@@ -47,7 +50,7 @@ onMounted(() => {
           <NavigationButton
             v-for="location in navStore.items"
             :key="location.id"
-            :name="location.icon"
+            :name="location.icon || icons.pin"
             :label="location.name"
             :href="location.href"
             :show-label="!collapsed"
@@ -56,7 +59,7 @@ onMounted(() => {
       </client-only>
       <div class="divider" />
       <NavigationButton
-        name="uil:signout"
+        :name="icons.logout"
         label="Sign Out"
         href="/signout"
         :show-label="!collapsed"
