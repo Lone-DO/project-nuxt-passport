@@ -1,12 +1,8 @@
 import { findUniqueSlug, injectLocation } from '~/lib/db/queries';
-import { validateLocationPayload, validateUniqueLocationName, validateUserSession } from '~/lib/db/validators';
+import { validateLocationPayload, validateUniqueLocationName } from '~/lib/db/validators';
+import defineAuthenticatedEventHandler from '~/utils/define-authenticated-event-handler';
 
-export default defineEventHandler(async (event) => {
-  /**
-   * Fetch User Session from AuthClient
-   * https://www.better-auth.com/docs/concepts/session-management#get-session
-   */
-  const session = await validateUserSession(event);
+export default defineAuthenticatedEventHandler(async (event, session) => {
   const result = await validateLocationPayload(event);
   await validateUniqueLocationName(result.name, Number(session.user.id));
   /** Verify that location.slug is UNIQUE */

@@ -52,7 +52,7 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-  <article class="container max-w-md">
+  <article id="dashboard-new" class="container max-w-md">
     <h4 class="my-4">
       Add Location
     </h4>
