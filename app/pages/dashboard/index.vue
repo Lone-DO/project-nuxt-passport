@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 const locationsStore = useLocationStore();
 const { items, status } = storeToRefs(locationsStore);
+const isLoading = computed(() => status.value === 'pending');
 
 onMounted(() => {
   locationsStore.refreshLocations();
@@ -13,14 +14,14 @@ onMounted(() => {
       Locations
     </h4>
 
-    <div v-if="status === 'pending'">
+    <div v-if="isLoading">
       <span class="loading loading-spinner loading-xl" />
     </div>
-    <ul v-else-if="items?.length" class="flex flex-wrap gap-4">
+    <ul v-else-if="items?.length" class="flex flex-nowrap gap-4 overflow-auto">
       <li
         v-for="(location) in items"
         :key="location?.id"
-        class="card bg-base-300 flex-1/3 sm:min-w-60"
+        class="card bg-base-300 flex-1/3 sm:min-w-60 shrink-0"
       >
         <DashboardLocationItem :location />
       </li>
