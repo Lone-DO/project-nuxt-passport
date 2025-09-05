@@ -1,21 +1,19 @@
+import { DARK_MODE_ICONS, LIGHT_MODE_ICONS } from '~/lib/constants';
+
 export const useAppStore = defineStore('useAppStore', () => {
   const colorMode = useColorMode();
-  const icons = computed<{ map: string; logout: string; add: string; pin: string }>(() => {
-    if (colorMode.value === 'dark') {
-      return {
-        add: 'majesticons:map-marker-plus-line',
-        map: 'majesticons:map-line',
-        pin: 'majesticons:map-simple-marker-line',
-        logout: 'majesticons:logout-line',
-      };
+  const icons = ref(LIGHT_MODE_ICONS);
+  function update() {
+    if ((colorMode.value) === 'dark') {
+      icons.value = DARK_MODE_ICONS;
     }
-    return {
-      add: 'majesticons:map-marker-plus',
-      map: 'majesticons:map',
-      pin: 'majesticons:map-simple-marker',
-      logout: 'majesticons:logout',
-    };
-  });
+    else {
+      icons.value = LIGHT_MODE_ICONS;
+    }
+  }
+  effect(update);
+  onMounted(update);
+
   return {
     icons,
   };

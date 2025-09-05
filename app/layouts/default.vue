@@ -1,5 +1,6 @@
 <script lang='ts' setup>
 await useAuthStore().init();
+await useAppStore();
 </script>
 
 <template>
