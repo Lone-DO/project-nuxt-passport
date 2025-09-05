@@ -74,6 +74,13 @@ bun run preview
 
 # Dependencies
 
+## Pending Migration
+
+- `better-auth@1.2.x`
+  - v1.3.x relies on zod@4, which currently is not compatible with current dependencies
+- `zod@3.x.x`
+  - v4 clashes with current schema verifications
+
 ## Nuxt Plugins
 
 ### @nuxt/icon
@@ -98,6 +105,12 @@ Used for Toggling Page Theme automatically based on toggle state. Modifies root 
 ### daisyui
 
 Tailwind UI Theme based library (Class based dumb components)
+
+## MabLibre
+
+- `maplibre-gl`: Core Module
+- `nuxt-maplibre`: Adds autocomplete
+- `@indoorequal/vue-maplibre-gl`: Vue Wrapper
 
 ## Utilities
 
