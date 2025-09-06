@@ -19,3 +19,14 @@ export type MapPin = {
   id: number;
   label: string;
 } & LatLongPin;
+
+export type Icons = {
+  add: string;
+  map: string;
+  pin: string;
+  logout: string;
+  navToggle: {
+    left: string;
+    right: string;
+  };
+};
