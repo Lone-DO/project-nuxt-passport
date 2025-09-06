@@ -10,7 +10,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
   } = useFetch('/api/locations', {
     lazy: true,
   });
-
+  /** Sort locations Alphabetically */
   const items = computed(() => data.value?.sort((a, b) => a.name.localeCompare(b.name)));
 
   const navigationStore = useNavigationStore();

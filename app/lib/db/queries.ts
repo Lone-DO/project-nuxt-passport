@@ -58,7 +58,6 @@ export async function injectLocation(data: InsertLocation, slug: string, userId:
       throw createError({
         statusCode: 409,
         statusMessage: 'Slug must be unique (the location name is used to generate the slug).',
-
       });
     }
     throw error;

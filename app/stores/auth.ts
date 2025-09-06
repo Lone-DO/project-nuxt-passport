@@ -15,6 +15,7 @@ export const useAuthStore = defineStore('useAuthStore', () => {
   const loading = computed(() => session.value?.isPending);
 
   async function signIn() {
+    /** TODO: Allow user to choose between Google/Github/Gitlab */
     await authClient.signIn.social({
       ...getCsrfHeaders(),
       provider: 'github',

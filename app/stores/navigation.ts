@@ -8,6 +8,6 @@ export type NavigationItem = {
 export const useNavigationStore = defineStore('useNavigationStore', () => {
   const items = ref<NavigationItem[]>([]);
   const loading = ref(false);
-
+  /** items are assigned on effect via locationStore */
   return { items, loading };
 });
