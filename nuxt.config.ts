@@ -2,8 +2,17 @@ import tailwindcss from '@tailwindcss/vite';
 
 import './app/lib/env';
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
+/** https://nuxt.com/docs/api/configuration/nuxt-config */
 export default defineNuxtConfig({
+  app: {
+    /** https://nuxt.com/docs/4.x/getting-started/seo-meta */
+    head: {
+      title: 'Project Passport (Losovoj)',
+      htmlAttrs: {
+        lang: 'en',
+      },
+    },
+  },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
@@ -19,7 +28,6 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      // noDiscovery: true,
       include: [
         'maplibre-gl',
       ],
