@@ -12,7 +12,7 @@ const isToggled = computed({
 </script>
 
 <template>
-  <label class="swap swap-rotate mx-4">
+  <label id="app-theme-toggle" class="swap swap-rotate mx-4">
     <input
       v-model="isToggled"
       name="theme"
@@ -21,12 +21,12 @@ const isToggled = computed({
     <Icon
       class="swap-on"
       name="majesticons:sun"
-      size="20"
+      size="24"
     />
     <Icon
       class="swap-off"
       name="majesticons:moon"
-      size="20"
+      size="24"
     />
   </label>
 </template>

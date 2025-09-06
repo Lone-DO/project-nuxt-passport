@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <fieldset class="fieldset">
+  <fieldset class="app-form-field fieldset">
     <legend class="fieldset-legend">
       {{ label }}
     </legend>

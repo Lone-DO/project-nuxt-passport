@@ -7,9 +7,9 @@ const mapStore = useMapStore();
 <template>
   <LazyClientOnly>
     <template #fallback>
-      <div class="skeleton flex-1" />
+      <section class="skeleton flex-1" />
     </template>
-    <div id="map-client" class="flex-1">
+    <section id="map-client" class="flex-1">
       <MglMap
         :map-style="mapStore.style"
         :center="mapStore.center"
@@ -32,6 +32,6 @@ const mapStore = useMapStore();
           </template>
         </MglMarker>
       </MglMap>
-    </div>
+    </section>
   </LazyClientOnly>
 </template>
