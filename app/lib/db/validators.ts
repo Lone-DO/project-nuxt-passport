@@ -15,6 +15,7 @@ export async function validateUserSession(event: H3Event<EventHandlerRequest>) {
       statusMessage: 'Unauthorized',
     });
   }
+  /** Else return session data */
   return session;
 }
 
@@ -39,6 +40,7 @@ export async function validateLocationPayload(event: H3Event<EventHandlerRequest
       data,
     });
   }
+  /** Else continue */
   return result.data;
 }
 

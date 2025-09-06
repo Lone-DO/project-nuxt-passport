@@ -6,7 +6,7 @@ const appStore = useAppStore();
 </script>
 
 <template>
-  <details v-if="!authStore.loading && authStore.user" class="dropdown dropdown-end">
+  <details v-if="!authStore.loading && authStore.user" class="auth-button dropdown dropdown-end">
     <summary class="btn m-1">
       <div class="avatar">
         <div class="mask mask-hexagon-2 w-8">
@@ -31,14 +31,14 @@ const appStore = useAppStore();
   <button
     v-else
     :disabled="authStore.loading"
-    class="btn btn-accent"
+    class="auth-button btn btn-accent"
     @click="authStore.signIn"
   >
     Sign in with GitHub
     <span v-if="authStore.loading" class="loading loading-spinner loading-md" />
     <Icon
       v-else
-      name="uil:github"
+      name="fa-brands:github-square"
       size="32"
     />
   </button>

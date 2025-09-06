@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar bg-primary text-primary-content">
+  <header id="app-header" class="navbar bg-primary text-primary-content">
     <div class="navbar-start">
       <nuxt-link to="/" class="btn btn-ghost text-xl ">
         Travel Log

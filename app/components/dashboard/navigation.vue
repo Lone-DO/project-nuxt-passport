@@ -5,11 +5,9 @@ const navStore = useNavigationStore();
 const { icons } = storeToRefs(appStore);
 
 const collapsed = ref(false);
-const collapseIcon = computed(() => collapsed.value ? 'uil:arrow-to-right' : 'uil:left-arrow-to-left');
 
-function toggleNav() {
-  collapsed.value = !collapsed.value;
-  localStorage.setItem('nav-collapsed', String(collapsed.value));
+function syncToggle(evt: any) {
+  localStorage.setItem('nav-collapsed', String(evt.target._modelValue));
 }
 
 onMounted(() => {
@@ -19,17 +17,32 @@ onMounted(() => {
 
 <template>
   <aside
-    class="p-1 flex flex-col border-r-2 border-(--custom-divider-color) transition-all duration-200"
+    class="dashboard-navigation p-1 flex flex-col border-r-2 border-(--custom-divider-color) transition-all duration-200"
     :class="{ 'w-16': collapsed, 'w-40': !collapsed }"
   >
-    <button
-      :class="{ 'justify-end': !collapsed, 'justify-center': collapsed }"
-      class="mb-1 flex hover:bg-base-300 hover:cursor-pointer"
+    <label
+      id="dashboard-navigation-toggle"
+      class="swap swap-rotate w-full hover:bg-base-300"
       :title="`${!collapsed ? 'collapse' : 'expand'} navigation panel`"
-      @click="toggleNav"
+      :class="{ 'justify-end': !collapsed, 'justify-center': collapsed, 'pr-2': !collapsed }"
     >
-      <Icon :name="collapseIcon" size="24" />
-    </button>
+      <input
+        v-model="collapsed"
+        name="toggle"
+        type="checkbox"
+        @change="syncToggle"
+      >
+      <Icon
+        class="swap-on"
+        :name="icons.navToggle.right"
+        size="24"
+      />
+      <Icon
+        class="swap-off"
+        :name="icons.navToggle.left"
+        size="24"
+      />
+    </label>
     <nav class="flex flex-col gap-1">
       <NavigationButton
         :name="icons.map"

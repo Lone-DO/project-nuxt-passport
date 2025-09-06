@@ -9,7 +9,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="dashboard-list" class="container">
+  <section id="dashboard-list">
     <h4 class="my-4">
       Locations
     </h4>
@@ -17,7 +17,7 @@ onMounted(() => {
     <div v-if="isLoading">
       <span class="loading loading-spinner loading-xl" />
     </div>
-    <ul v-else-if="items?.length" class="flex flex-nowrap gap-4 overflow-auto">
+    <ul v-else-if="items?.length" class="flex gap-4 overflow-auto">
       <li
         v-for="(location) in items"
         :key="location?.id"
