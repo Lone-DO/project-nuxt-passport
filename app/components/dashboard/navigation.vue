@@ -30,7 +30,7 @@ onMounted(() => {
         v-model="collapsed"
         name="toggle"
         type="checkbox"
-        @input="syncToggle"
+        @change="syncToggle"
       >
       <Icon
         class="swap-on"
