@@ -6,7 +6,7 @@ const $props = defineProps<{
 
 const appStore = useAppStore();
 const mapStore = useMapStore();
-const isSelected = computed(() => mapStore.selectedPin === $props.location?.id);
+const isSelected = computed(() => mapStore.selectedPin?.id === $props.location?.id);
 const { icons } = storeToRefs(appStore);
 </script>
 

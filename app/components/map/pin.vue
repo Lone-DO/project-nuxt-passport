@@ -6,7 +6,7 @@ const $props = defineProps<{
 }>();
 
 const mapStore = useMapStore();
-const isSelected = computed(() => mapStore.selectedPin === $props.pin?.id);
+const isSelected = computed(() => mapStore.selectedPin?.id === $props.pin?.id);
 </script>
 
 <template>
@@ -16,6 +16,8 @@ const isSelected = computed(() => mapStore.selectedPin === $props.pin?.id);
         class="tooltip tooltip-top"
         :class="{ 'tooltip-open': isSelected }"
         :data-tip="pin?.label"
+        @mouseenter="mapStore.syncPin(pin, true, false)"
+        @mouseleave="mapStore.syncPin(pin, false, false)"
       >
         <Icon
           size="30"

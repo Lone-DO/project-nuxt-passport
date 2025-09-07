@@ -6,7 +6,7 @@ const $props = defineProps<{
 }>();
 
 const mapStore = useMapStore();
-const isSelected = computed(() => mapStore.selectedPin === $props.location?.id);
+const isSelected = computed(() => mapStore.selectedPin?.id === $props.location?.id);
 </script>
 
 <template>
