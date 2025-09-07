@@ -12,7 +12,11 @@ const isSelected = computed(() => mapStore.selectedPin === $props.pin?.id);
 <template>
   <MglMarker :coordinates="[pin?.long, pin?.lat]">
     <template #marker>
-      <div class="tooltip tooltip-top" :data-tip="pin?.label">
+      <div
+        class="tooltip tooltip-top"
+        :class="{ 'tooltip-open': isSelected }"
+        :data-tip="pin?.label"
+      >
         <Icon
           size="30"
           name="majesticons:map-marker-area"
