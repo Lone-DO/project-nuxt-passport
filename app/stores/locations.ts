@@ -30,6 +30,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
         mapPins.push({
           id: location.id,
           label: location.name,
+          description: location.description,
           lat: location.lat,
           long: location.long,
         });

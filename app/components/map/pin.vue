@@ -24,5 +24,13 @@ const isSelected = computed(() => mapStore.selectedPin === $props.pin?.id);
         />
       </div>
     </template>
+    <MglPopup>
+      <h3 class="text-2xl">
+        {{ pin.label }}
+      </h3>
+      <p v-if="pin.description">
+        {{ pin.description }}
+      </p>
+    </MglPopup>
   </MglMarker>
 </template>
