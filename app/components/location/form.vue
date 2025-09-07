@@ -6,6 +6,7 @@ defineProps<{
     lat?: string;
     long?: string;
   };
+  controlledValues: any;
   busy?: boolean;
 }>();
 
@@ -36,20 +37,7 @@ const { icons } = storeToRefs(appStore);
       :error="errors.description"
       :disabled="busy"
     />
-    <AppFormField
-      name="lat"
-      label="Latitude"
-      type="number"
-      :error="errors.lat"
-      :disabled="busy"
-    />
-    <AppFormField
-      name="long"
-      label="Longitude"
-      type="number"
-      :error="errors.long"
-      :disabled="busy"
-    />
+    <LocationCoordinatesField :lat="controlledValues.lat" :long="controlledValues.long" />
     <div class="flex justify-end gap-2">
       <button
         class="btn btn-outline"

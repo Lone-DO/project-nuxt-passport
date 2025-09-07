@@ -1,15 +1,26 @@
 <script lang='ts' setup>
 import type { FetchError } from 'ofetch';
 
+import { CENTER_GERMANY } from '~/lib/constants';
 import { InsertLocation } from '~/lib/db/schema';
+
+const [long, lat] = CENTER_GERMANY as [number, number];
 
 const { $csrfFetch } = useNuxtApp();
 
 const busy = ref(false);
 const submitted = ref(false);
+const mapStore = useMapStore();
 const submitError = ref<string | null>('');
-const { handleSubmit, errors, meta, setErrors } = useForm({
+const { handleSubmit, errors, meta, setErrors, setFieldValue, controlledValues } = useForm({
   validationSchema: toTypedSchema(InsertLocation),
+  /** Stage initial values to prevent form dirty during init */
+  initialValues: {
+    name: '',
+    description: '',
+    long,
+    lat,
+  },
 });
 
 const onSubmit = handleSubmit(async (values) => {
@@ -49,11 +60,34 @@ onBeforeRouteLeave(() => {
   // eslint-disable-next-line no-alert
   return window.confirm('Are you sure you want to leave? All unsaved changes will be lost.');
 });
+
+onUnmounted(() => {
+  /** onDestroy, remove global instance */
+  mapStore.newPin = null;
+});
+onMounted(() => {
+  /** onMount, stage global instance */
+  mapStore.newPin = {
+    id: 0,
+    label: '',
+    description: '',
+    long,
+    lat,
+  };
+});
+
+effect(() => {
+  /** onChange via MapClient events, update form Long/Lat values */
+  if (mapStore.newPin) {
+    setFieldValue('long', mapStore.newPin.long);
+    setFieldValue('lat', mapStore.newPin.lat);
+  }
+});
 </script>
 
 <template>
-  <article id="dashboard-new" class="container max-w-md">
-    <h4 class="my-4">
+  <article id="dashboard-new" class="flex-1 max-w-md">
+    <h4 class="mb-4">
       Add Location
     </h4>
     <p class="text-sm">
@@ -69,6 +103,7 @@ onBeforeRouteLeave(() => {
     <LocationForm
       :errors
       :busy
+      :controlled-values
       @submit="onSubmit"
     />
   </article>
