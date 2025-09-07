@@ -1,3 +1,4 @@
+import type { location } from '~/lib/db/queries';
 import type { MapPin } from '~/lib/types';
 
 import { CENTER_GERMANY } from '~/lib/constants';
@@ -13,7 +14,7 @@ export const useMapStore = defineStore('useMapStore', () => {
   /** General */
   /** Pins are set via effect in locationStore */
   const pins = ref<MapPin[]>([]);
-  const selectedPin = ref<MapPin | null>(null);
+  const selectedPin = ref<number | null>(1);
 
   onMounted(async () => {
     /** Dynamic imports as Maplibre is a ClientSide only module */
@@ -44,6 +45,17 @@ export const useMapStore = defineStore('useMapStore', () => {
     });
   });
 
+  function syncPin(pin: NavigationItem | MapPin | location, toggle: boolean) {
+    if (pin?.id) {
+      if (selectedPin.value === pin.id && !toggle) {
+        selectedPin.value = null;
+      }
+      else if (selectedPin.value !== pin.id && toggle) {
+        selectedPin.value = pin.id;
+      }
+    }
+  }
+
   return {
     /** Settings */
     zoom,
@@ -52,5 +64,6 @@ export const useMapStore = defineStore('useMapStore', () => {
     /** General */
     pins,
     selectedPin,
+    syncPin,
   };
 });

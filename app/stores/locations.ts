@@ -22,7 +22,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
       const mapPins: MapPin[] = [];
       items.value.forEach((location) => {
         navItems.push({
-          id: `location-${location?.id}`,
+          id: location.id,
           name: location.name,
           icon: '',
           href: '#',
