@@ -1,5 +1,7 @@
 import type { EventHandlerRequest, H3Event } from 'h3';
 
+import sendZodError from '~/utils/send-zod-error';
+
 import { auth } from '../auth';
 import { findLocationByName } from './queries';
 import { InsertLocation } from './schema';
@@ -24,21 +26,7 @@ export async function validateLocationPayload(event: H3Event<EventHandlerRequest
   const result = await readValidatedBody(event, InsertLocation.safeParse);
   /** IF submitted Data is invalid, return errors to form */
   if (!result.success) {
-    /** Pretty Errors messages as Key/value pairs */
-    let statusMessage: string[] | string = [];
-    const data: Record<string, string> = {};
-    for (const issue of result.error.issues) {
-      /** expected example("name: required") */
-      statusMessage.push(`${issue.path.join('')}: ${issue.message}`);
-      data[issue.path.join('')] = issue.message;
-    }
-    statusMessage = statusMessage.join('; ');
-
-    throw createError({
-      statusCode: 422,
-      statusMessage,
-      data,
-    });
+    return sendZodError(event, result.error);
   }
   /** Else continue */
   return result.data;
