@@ -12,7 +12,7 @@ onMounted(() => {
 
 <template>
   <section id="dashboard" class="flex w-full">
-    <DashboardNavigation />
+    <Navigation />
     <div
       class="flex-1 flex justify-center p-4 gap-4 w-16"
       :class="{
@@ -20,7 +20,7 @@ onMounted(() => {
       }"
     >
       <NuxtPage />
-      <AppMap />
+      <MapClient />
     </div>
   </section>
 </template>
