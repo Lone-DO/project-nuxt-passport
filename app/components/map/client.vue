@@ -1,7 +1,17 @@
 <script setup lang='ts'>
+import type { MglEvent } from '@indoorequal/vue-maplibre-gl';
+
 import { useMapStore } from '~/stores/map';
 
 const mapStore = useMapStore();
+const route = useRoute();
+const addingNewLocation = computed(() => route.path === '/dashboard/new');
+
+function syncCords(clickEvt: MglEvent<'dblclick'>) {
+  if (mapStore.newPin) {
+    mapStore.syncNewPinCoords(clickEvt.event.lngLat);
+  }
+}
 </script>
 
 <template>
@@ -14,6 +24,7 @@ const mapStore = useMapStore();
         :map-style="mapStore.style"
         :center="mapStore.center"
         :zoom="mapStore.zoom"
+        @map:dblclick="syncCords"
       >
         <MglNavigationControl />
         <MapPin
@@ -21,6 +32,7 @@ const mapStore = useMapStore();
           :key="pin.id"
           :pin
         />
+        <MapNewPin v-if="addingNewLocation" />
       </MglMap>
     </section>
   </LazyClientOnly>

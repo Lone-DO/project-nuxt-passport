@@ -1,4 +1,4 @@
-import type { LngLatBounds } from 'maplibre-gl';
+import type { LngLat, LngLatBounds } from 'maplibre-gl';
 
 import type { location } from '~/lib/db/queries';
 import type { MapPin } from '~/lib/types';
@@ -8,7 +8,6 @@ import { CENTER_GERMANY } from '~/lib/constants';
 export const useMapStore = defineStore('useMapStore', () => {
   /** Settings */
   const zoom = ref(5);
-  let enableZoom: boolean = true;
   const boundOpts = {
     padding: 60,
     maxZoom: 10,
@@ -18,9 +17,17 @@ export const useMapStore = defineStore('useMapStore', () => {
   const darkMode = '/styles/dark.json';
   const lightMode = 'https://tiles.openfreemap.org/styles/liberty';
   const style = computed(() => colorMode.value === 'dark' ? darkMode : lightMode);
+  /**
+   * enableZoom is disabled when triggered by MapPins,
+   * OR enabled when triggered by Navigation or Dashboard Items
+   */
+  let enableZoom: boolean = true;
   /** General */
   /** Pins are set via effect in locationStore */
   const pins = ref<MapPin[]>([]);
+  /** Shared New location instance */
+  const newPin = ref<MapPin | null>(null);
+  /** Currently Selected Pin */
   const selectedPin = ref<MapPin | null>(null);
 
   onMounted(async () => {
@@ -48,13 +55,18 @@ export const useMapStore = defineStore('useMapStore', () => {
       /** https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#fitbounds */
       mapClient.map?.fitBounds(bounds, boundOpts);
     });
+    effect(() => {
+      /** Targeted Animation onHover events */
+      /** * WHILE newPin is valid, Disable Animations */
+      if (newPin.value) {
+        return;
+      }
 
-    watch(selectedPin, (newVal) => {
-      if (newVal) {
+      if (selectedPin.value) {
         return !enableZoom
           ? null
           : mapClient.map?.flyTo({
-              center: [newVal?.long as number, newVal?.lat as number],
+              center: [selectedPin.value?.long as number, selectedPin.value?.lat as number],
               speed: 0.8,
               zoom: 6,
             });
@@ -63,6 +75,16 @@ export const useMapStore = defineStore('useMapStore', () => {
         mapClient.map?.fitBounds(bounds as LngLatBounds, boundOpts);
       }
     });
+
+    watch(newPin, (newVal, oldVal) => {
+      if (newVal && !oldVal) {
+        mapClient.map?.flyTo({
+          center: [newVal?.long as number, newVal?.lat as number],
+          speed: 0.8,
+          zoom: 9,
+        });
+      }
+    }, { immediate: true });
   });
 
   function syncPin(pin: NavigationItem | MapPin | location, toggle: boolean, shouldZoom = true) {
@@ -77,6 +99,16 @@ export const useMapStore = defineStore('useMapStore', () => {
     }
   }
 
+  function syncNewPinCoords(lngLat: LngLat) {
+    if (newPin.value) {
+      newPin.value = {
+        ...newPin.value,
+        long: lngLat.lng,
+        lat: lngLat.lat,
+      };
+    }
+  }
+
   return {
     /** Settings */
     zoom,
@@ -84,7 +116,9 @@ export const useMapStore = defineStore('useMapStore', () => {
     center,
     /** General */
     pins,
-    selectedPin,
+    newPin,
     syncPin,
+    syncNewPinCoords,
+    selectedPin,
   };
 });

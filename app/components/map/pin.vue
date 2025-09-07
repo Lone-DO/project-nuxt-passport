@@ -1,4 +1,6 @@
 <script lang='ts' setup>
+import type { LngLatLike } from 'maplibre-gl';
+
 import type { MapPin } from '~/lib/types';
 
 const $props = defineProps<{
@@ -7,21 +9,22 @@ const $props = defineProps<{
 
 const mapStore = useMapStore();
 const isSelected = computed(() => mapStore.selectedPin?.id === $props.pin?.id);
+const coordinates = computed<LngLatLike>(() => [$props.pin?.long || 0, $props.pin?.lat || 0]);
 </script>
 
 <template>
-  <MglMarker :coordinates="[pin?.long, pin?.lat]">
+  <MglMarker :coordinates>
     <template #marker>
       <div
         class="tooltip tooltip-top"
         :class="{ 'tooltip-open': isSelected }"
-        :data-tip="pin?.label"
+        :data-tip="pin.label"
         @mouseenter="mapStore.syncPin(pin, true, false)"
         @mouseleave="mapStore.syncPin(pin, false, false)"
       >
         <Icon
           size="30"
-          name="majesticons:map-marker-area"
+          name="majesticons:map-marker"
           :class="{ 'text-secondary': !isSelected, 'text-accent': isSelected }"
         />
       </div>
