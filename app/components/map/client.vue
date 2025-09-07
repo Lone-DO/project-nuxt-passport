@@ -16,21 +16,11 @@ const mapStore = useMapStore();
         :zoom="mapStore.zoom"
       >
         <MglNavigationControl />
-        <MglMarker
-          v-for="point in mapStore.pins"
-          :key="point.id"
-          :coordinates="[point.long, point.lat]"
-        >
-          <template #marker>
-            <div class="tooltip tooltip-top" :data-tip="point.label">
-              <Icon
-                size="30"
-                name="majesticons:map-marker-area"
-                class="text-secondary"
-              />
-            </div>
-          </template>
-        </MglMarker>
+        <MapPin
+          v-for="pin in mapStore.pins"
+          :key="pin.id"
+          :pin
+        />
       </MglMap>
     </section>
   </LazyClientOnly>
