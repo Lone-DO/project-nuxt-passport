@@ -4,6 +4,7 @@ const $props = defineProps({
   size: { type: String, default: '24' },
   href: { type: String, required: true },
   label: { type: String, default: null },
+  hasOverride: { type: Boolean, default: false },
   showLabel: { type: Boolean, default: true },
 });
 
@@ -13,8 +14,8 @@ const isActive = computed(() => route.fullPath === $props.href);
 
 <template>
   <div
-    class="tooltip-right"
-    :class="{ tooltip: !showLabel }"
+    class="tooltip-right w-full"
+    :class="{ 'tooltip': !showLabel, 'tooltip-open': hasOverride }"
     :data-tip="!showLabel ? label : null"
   >
     <NuxtLink

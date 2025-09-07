@@ -23,7 +23,7 @@ onMounted(() => {
         :key="location?.id"
         class="card bg-base-300 flex-1/3 sm:min-w-60 shrink-0"
       >
-        <DashboardLocationItem :location />
+        <LocationItem :location />
       </li>
     </ul>
     <template v-else>

@@ -18,6 +18,7 @@ export type LatLongPin = {
 export type MapPin = {
   id: number;
   label: string;
+  description: string | null;
 } & LatLongPin;
 
 export type Icons = {
