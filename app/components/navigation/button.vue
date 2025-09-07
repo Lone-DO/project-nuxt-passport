@@ -14,7 +14,7 @@ const isActive = computed(() => route.fullPath === $props.href);
 
 <template>
   <div
-    class="tooltip-right"
+    class="tooltip-right w-full"
     :class="{ 'tooltip': !showLabel, 'tooltip-open': hasOverride }"
     :data-tip="!showLabel ? label : null"
   >
