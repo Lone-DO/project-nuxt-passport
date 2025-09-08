@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3';
 import type { ZodError } from 'zod';
 
-export default function sendZodError(_: H3Event, error: ZodError) {
+export default function sendZodError(event: H3Event, error: ZodError) {
   /** Pretty Errors messages as Key/value pairs */
   let statusMessage: string[] | string = [];
   const data: Record<string, string> = {};
@@ -12,9 +12,9 @@ export default function sendZodError(_: H3Event, error: ZodError) {
   }
   statusMessage = statusMessage.join('; ');
 
-  throw createError({
+  return sendError(event, createError({
     statusCode: 422,
     statusMessage,
     data,
-  });
+  }));
 }
