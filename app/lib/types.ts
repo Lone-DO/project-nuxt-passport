@@ -25,7 +25,10 @@ export type Icons = {
   add: string;
   map: string;
   pin: string;
+  pointerEvent: string;
   logout: string;
+  search: string;
+  searchPin: string;
   navToggle: {
     left: string;
     right: string;
