@@ -26,7 +26,7 @@ export const useMapStore = defineStore('useMapStore', () => {
   /** Pins are set via effect in locationStore */
   const pins = ref<MapPin[]>([]);
   /** Shared New location instance */
-  const newPin = ref<MapPin | null>(null);
+  const newPin = ref<MapPin & { centerMap?: boolean } | null>(null);
   /** Currently Selected Pin */
   const selectedPin = ref<MapPin | null>(null);
 
@@ -77,7 +77,8 @@ export const useMapStore = defineStore('useMapStore', () => {
     });
 
     watch(newPin, (newVal, oldVal) => {
-      if (newVal && !oldVal) {
+      /** Fly to new cords onInit OR `centerMap` option is truthy (used via search form) */
+      if ((newVal && !oldVal) || newVal?.centerMap) {
         mapClient.map?.flyTo({
           center: [newVal?.long as number, newVal?.lat as number],
           speed: 0.8,
@@ -87,6 +88,7 @@ export const useMapStore = defineStore('useMapStore', () => {
     }, { immediate: true });
   });
 
+  /** Used for onHover events to highlight targets in MapClient, Navigation, and LocationList */
   function syncPin(pin: NavigationItem | MapPin | location, toggle: boolean, shouldZoom = true) {
     if (pin?.id) {
       if (selectedPin.value?.id === pin.id && !toggle) {
@@ -98,7 +100,7 @@ export const useMapStore = defineStore('useMapStore', () => {
       }
     }
   }
-
+  /** Used for `/new` page, via onDbClick && onDrag events in MapClient */
   function syncNewPinCoords(lngLat: LngLat) {
     if (newPin.value) {
       newPin.value = {
