@@ -7,18 +7,27 @@ import { findLocationByName } from './queries';
 import { InsertLocation } from './schema';
 
 export async function validateUserSession(event: H3Event<EventHandlerRequest>) {
-  const session = await auth.api.getSession({
-    headers: event.headers,
-  });
-  /** IF User is NOT logged in, throw unauth error */
-  if (!session?.user) {
-    throw createError({
+  try {
+    const session = await auth.api.getSession({
+      headers: event.headers,
+    });
+    /** IF User is NOT logged in, throw unauth error */
+    if (!session?.user) {
+      return sendError(event, createError({
+        statusCode: 401,
+        statusMessage: 'Unauthorized',
+      }));
+    }
+    /** Else return session data */
+    return session;
+  }
+  catch (error) {
+    console.error(error);
+    return sendError(event, createError({
       statusCode: 401,
       statusMessage: 'Unauthorized',
-    });
+    }));
   }
-  /** Else return session data */
-  return session;
 }
 
 export async function validateLocationPayload(event: H3Event<EventHandlerRequest>) {
