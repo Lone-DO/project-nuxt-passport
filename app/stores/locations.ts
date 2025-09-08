@@ -1,4 +1,4 @@
-import type { MapPin } from '~/lib/types';
+import type { MapPin, NavigationItem } from '~/lib/types';
 
 import { useMapStore } from './map';
 
@@ -25,7 +25,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
           id: location.id,
           name: location.name,
           icon: '',
-          href: '#',
+          to: { name: 'dashboard-location-slug', params: { slug: location?.slug } },
           lat: location.lat,
           long: location.long,
         });

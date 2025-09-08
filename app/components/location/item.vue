@@ -10,7 +10,8 @@ const isSelected = computed(() => mapStore.selectedPin?.id === $props.location?.
 </script>
 
 <template>
-  <article
+  <NuxtLink
+    :to="{ name: 'dashboard-location-slug', params: { slug: location?.slug } }"
     class="dashboard-location-item card-body cursor-pointer border"
     :class="{ 'border-transparent': !isSelected, 'border-accent': isSelected }"
     @mouseenter="mapStore.syncPin(location, true)"
@@ -20,5 +21,5 @@ const isSelected = computed(() => mapStore.selectedPin?.id === $props.location?.
       {{ location?.name }}
     </h2>
     <p>{{ location?.description || '...' }}</p>
-  </article>
+  </NuxtLink>
 </template>

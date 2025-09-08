@@ -1,7 +1,7 @@
 import type { LngLat, LngLatBounds } from 'maplibre-gl';
 
 import type { location } from '~/lib/db/queries';
-import type { MapPin } from '~/lib/types';
+import type { MapPin, NavigationItem } from '~/lib/types';
 
 import { CENTER_GERMANY } from '~/lib/constants';
 

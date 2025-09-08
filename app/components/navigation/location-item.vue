@@ -1,4 +1,6 @@
 <script setup lang='ts'>
+import type { NavigationItem } from '~/lib/types';
+
 const $props = defineProps<{
   location: NavigationItem;
   collapsed: boolean;
@@ -16,6 +18,7 @@ const { icons } = storeToRefs(appStore);
       :name="location.icon || icons.pin"
       :label="location.name"
       :href="location.href"
+      :to="location.to"
       :show-label="!collapsed"
       class="border"
       :class="{ 'border-transparent': !isSelected, 'border-accent': isSelected }"
