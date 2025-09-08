@@ -17,7 +17,6 @@ const { icons } = storeToRefs(appStore);
       :label="location.name"
       :href="location.href"
       :show-label="!collapsed"
-      :has-override="isSelected"
       class="border"
       :class="{ 'border-transparent': !isSelected, 'border-accent': isSelected }"
       @mouseenter="mapStore.syncPin(location, true)"

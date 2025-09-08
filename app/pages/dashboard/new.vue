@@ -1,8 +1,11 @@
 <script lang='ts' setup>
 import type { FetchError } from 'ofetch';
 
+import type { NominatimResult } from '~/lib/types';
+
 import { CENTER_GERMANY } from '~/lib/constants';
 import { InsertLocation } from '~/lib/db/schema';
+import getFetchErrorMessage from '~/utils/get-fetch-error';
 
 const [long, lat] = CENTER_GERMANY as [number, number];
 
@@ -42,12 +45,24 @@ const onSubmit = handleSubmit(async (values) => {
       setErrors(error.data?.data);
     }
     /** error.data.statusMessage is fallback for PROD captures */
-    submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occurred.';
+    submitError.value = getFetchErrorMessage(error);
   }
   finally {
     busy.value = false;
   }
 });
+
+function syncSelectedLocation(result: NominatimResult) {
+  setFieldValue('name', result.display_name);
+  mapStore.newPin = {
+    id: 1,
+    label: 'Added Point',
+    description: '',
+    long: Number(result.lon),
+    lat: Number(result.lat),
+    centerMap: true,
+  };
+}
 
 onBeforeRouteLeave(() => {
   /**
@@ -106,5 +121,7 @@ effect(() => {
       :controlled-values
       @submit="onSubmit"
     />
+    <div class="divider" />
+    <LocationSearchForm @selected="syncSelectedLocation" />
   </article>
 </template>

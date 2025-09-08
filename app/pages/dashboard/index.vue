@@ -10,7 +10,7 @@ onMounted(() => {
 
 <template>
   <section id="dashboard-list">
-    <h4 class="my-4">
+    <h4 class="mb-4">
       Locations
     </h4>
 

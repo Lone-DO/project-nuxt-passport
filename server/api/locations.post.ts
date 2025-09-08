@@ -1,9 +1,11 @@
+import type { InsertLocation } from '~/lib/db/schema';
+
 import { findUniqueSlug, injectLocation } from '~/lib/db/queries';
 import { validateLocationPayload, validateUniqueLocationName } from '~/lib/db/validators';
 import defineAuthenticatedEventHandler from '~/utils/define-authenticated-event-handler';
 
 export default defineAuthenticatedEventHandler(async (event, session) => {
-  const result = await validateLocationPayload(event);
+  const result = await validateLocationPayload(event) as InsertLocation;
   await validateUniqueLocationName(result.name, Number(session.user.id));
   /** Verify that location.slug is UNIQUE */
   const slug = await findUniqueSlug(result.name);

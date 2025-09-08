@@ -25,9 +25,29 @@ export type Icons = {
   add: string;
   map: string;
   pin: string;
+  pointerEvent: string;
   logout: string;
+  search: string;
+  searchPin: string;
   navToggle: {
     left: string;
     right: string;
   };
+};
+
+export type NominatimResult = {
+  place_id: number;
+  licence: string;
+  osm_type: string;
+  osm_id: number;
+  lat: string;
+  lon: string;
+  class: string;
+  type: string;
+  place_rank: number;
+  importance: number;
+  addresstype: string;
+  name: string;
+  display_name: string;
+  boundingbox: string[];
 };

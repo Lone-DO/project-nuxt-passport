@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   });
   if (event.path.startsWith('/dashboard') && !session?.user) {
     /** TODO: Create Banner Alert component that watches for errors in AppStore */
-    console.warn(`Unauthorized access to path ${event.path}, redirecting to home page`);
-    await sendRedirect(event, '/', 302);
+    const errorMsg = `Unauthorized access to path ${event.path}, redirecting to home page`;
+    await sendRedirect(event, `/error?error=${errorMsg}`, 302);
   }
 });
