@@ -14,7 +14,8 @@
     "prepare:drizzle": "drizzle-kit generate && drizzle-kit migrate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "studio": "drizzle-kit studio"
+    "studio": "drizzle-kit studio",
+    "typecheck": "nuxi typecheck"
   },
   "dependencies": {
     "@indoorequal/vue-maplibre-gl": "^8.4.2",
@@ -53,7 +54,8 @@
     "eslint": "^9.34.0",
     "eslint-plugin-format": "^1.0.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.5"
+    "lint-staged": "^16.1.5",
+    "vue-tsc": "^3.0.6"
   },
   "lint-staged": {
     "*": "pnpm lint"
