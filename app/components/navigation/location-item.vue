@@ -9,7 +9,7 @@ const $props = defineProps<{
 const appStore = useAppStore();
 const mapStore = useMapStore();
 const isSelected = computed(() => mapStore.isSelected($props.location));
-const isCurrentSlug = computed(() => !mapStore.currentSlug || mapStore.currentSlug === $props.location.mapPin.slug);
+const isCurrentSlug = computed(() => !mapStore.currentSlug || mapStore.currentSlug === $props.location.mapPin?.slug);
 </script>
 
 <template>
