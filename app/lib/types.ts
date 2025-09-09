@@ -36,6 +36,7 @@ export type Icons = {
   logout: string;
   search: string;
   searchPin: string;
+  settings: string;
   navToggle: {
     left: string;
     right: string;
@@ -60,10 +61,10 @@ export type NominatimResult = {
 };
 
 export type NavigationItem = {
-  id: number;
+  id: string | number;
   name: string;
   icon: string;
   href?: string;
   to?: RouteLocationRaw;
-  mapPin: location;
-} & LatLongPin;
+  mapPin?: location;
+};

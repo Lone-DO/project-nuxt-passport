@@ -64,7 +64,7 @@ export const useMapStore = defineStore('useMapStore', () => {
     effect(() => {
       /** Targeted Animation onHover events */
       /** * ONLY Enable Animations while on Root Dashboard */
-      if (route.path !== '/dashboard') {
+      if (route.name !== 'dashboard') {
         return;
       }
 
@@ -96,7 +96,7 @@ export const useMapStore = defineStore('useMapStore', () => {
   }
 
   /** Used for onHover events to highlight targets in MapClient, Navigation, and LocationList */
-  function syncPin(pin: NavigationItem | MapPin | location, toggle: boolean, shouldZoom = true) {
+  function syncPin(pin?: NavigationItem | MapPin | location, toggle?: boolean, shouldZoom = true) {
     if (pin?.id) {
       if (selectedPin.value?.id === pin.id && !toggle) {
         selectedPin.value = null;
@@ -118,7 +118,7 @@ export const useMapStore = defineStore('useMapStore', () => {
     }
   }
 
-  function isSelected(pin: { slug?: any; id?: number }) {
+  function isSelected(pin: { slug?: any; id?: number | string }) {
     if (!pin?.slug && !pin?.id) {
       return false;
     }
@@ -126,7 +126,7 @@ export const useMapStore = defineStore('useMapStore', () => {
     if (pin.slug && currentSlug.value) {
       return pin.slug === currentSlug.value;
     }
-    return selectedPin.value?.id === pin?.id;
+    return selectedPin.value?.id === (pin?.id as number);
   }
 
   return {

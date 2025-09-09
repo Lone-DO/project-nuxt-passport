@@ -14,20 +14,17 @@ onMounted(() => {
 <template>
   <aside
     class="dashboard-navigation p-1 flex flex-col border-r-2 border-(--custom-divider-color) transition-all duration-200 gap-1"
-    :class="{ 'w-16': collapsed, 'w-40': !collapsed }"
+    :class="{ 'w-16': collapsed, 'w-48': !collapsed }"
   >
     <NavigationToggle v-model="collapsed" />
     <nav class="flex flex-col gap-1">
       <NavigationButton
-        :icon-name="icons.map"
-        name="Locations"
-        href="/dashboard"
-        :show-label="!collapsed"
-      />
-      <NavigationButton
-        :icon-name="icons.add"
-        name="Add Location"
-        href="/dashboard/new"
+        v-for="nav in navStore.topItems"
+        :key="nav.id"
+        :icon-name="nav.icon"
+        :name="nav.name"
+        :href="nav.href"
+        :to="nav.to"
         :show-label="!collapsed"
       />
       <template v-if="navStore.loading || navStore.items.length">

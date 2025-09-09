@@ -1,3 +1,5 @@
+import slugify from 'slug';
+
 import type { InsertLocation } from '~/lib/db/schema';
 
 import { findUniqueSlug, injectLocation } from '~/lib/db/queries';
@@ -8,7 +10,7 @@ export default defineAuthenticatedEventHandler(async (event, session) => {
   const result = await validateLocationPayload(event) as InsertLocation;
   await validateUniqueLocationName(result.name, Number(session.user.id));
   /** Verify that location.slug is UNIQUE */
-  const slug = await findUniqueSlug(result.name);
+  const slug = await findUniqueSlug(slugify(result.name));
 
   /**
    * Capture created data instance and return to client
