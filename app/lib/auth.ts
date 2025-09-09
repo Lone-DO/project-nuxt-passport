@@ -22,3 +22,6 @@ export const auth = betterAuth({
     },
   },
 });
+
+export type authSession = Awaited<ReturnType<typeof auth.api.getSession>>;
+export type authSessionValidated = Exclude<authSession, null>;

@@ -8,7 +8,7 @@ const $props = defineProps<{
 }>();
 
 const mapStore = useMapStore();
-const isSelected = computed(() => mapStore.selectedPin?.id === $props.pin?.id);
+const isSelected = computed(() => mapStore.isSelected($props.pin));
 const coordinates = computed<LngLatLike>(() => [$props.pin?.long || 0, $props.pin?.lat || 0]);
 </script>
 
@@ -18,7 +18,7 @@ const coordinates = computed<LngLatLike>(() => [$props.pin?.long || 0, $props.pi
       <div
         class="tooltip tooltip-top"
         :class="{ 'tooltip-open': isSelected }"
-        :data-tip="pin.label"
+        :data-tip="pin.name"
         @mouseenter="mapStore.syncPin(pin, true, false)"
         @mouseleave="mapStore.syncPin(pin, false, false)"
       >
@@ -30,11 +30,16 @@ const coordinates = computed<LngLatLike>(() => [$props.pin?.long || 0, $props.pi
       </div>
     </template>
     <MglPopup>
-      <h3 class="text-2xl">
-        {{ pin.label }}
+      <h3 class="text-xl">
+        {{ pin.name }}
       </h3>
       <p v-if="pin.description">
         {{ pin.description }}
+      </p>
+      <p v-if="pin.to" class="flex justify-end mt-4">
+        <NuxtLink :to="pin.to" class="btn btn-sm btn-outline">
+          {{ pin.toLabel }}
+        </NuxtLink>
       </p>
     </MglPopup>
   </MglMarker>

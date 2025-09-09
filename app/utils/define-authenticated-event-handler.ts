@@ -1,8 +1,10 @@
 import type { EventHandlerRequest, H3Event } from 'h3';
 
+import type { authSessionValidated } from '~/lib/auth';
+
 import { validateUserSession } from '~/lib/db/validators';
 
-export type authCallback<T> = (callback: H3Event<EventHandlerRequest>, session: Awaited<ReturnType<typeof validateUserSession>>) => T;
+export type authCallback<T> = (callback: H3Event<EventHandlerRequest>, session: authSessionValidated) => T;
 
 export default function defineAuthenticatedEventHandler<T>(callback: authCallback<T>) {
   return defineEventHandler(async (event) => {
@@ -10,7 +12,8 @@ export default function defineAuthenticatedEventHandler<T>(callback: authCallbac
      * Fetch User Session from AuthClient
      * https://www.better-auth.com/docs/concepts/session-management#get-session
      */
-    const session = await validateUserSession(event);
+    const result = await validateUserSession(event);
+    const session = result as authSessionValidated;
     return callback(event, session);
   });
 }

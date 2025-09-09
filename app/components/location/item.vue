@@ -1,16 +1,17 @@
 <script setup lang='ts'>
-import type { location } from '~/lib/db/queries';
+import type { location } from '~/lib/db/schema';
 
 const $props = defineProps<{
   location: location;
 }>();
 
 const mapStore = useMapStore();
-const isSelected = computed(() => mapStore.selectedPin?.id === $props.location?.id);
+const isSelected = computed(() => mapStore.isSelected($props.location));
 </script>
 
 <template>
-  <article
+  <NuxtLink
+    :to="{ name: 'dashboard-location-slug', params: { slug: location?.slug } }"
     class="dashboard-location-item card-body cursor-pointer border"
     :class="{ 'border-transparent': !isSelected, 'border-accent': isSelected }"
     @mouseenter="mapStore.syncPin(location, true)"
@@ -20,5 +21,5 @@ const isSelected = computed(() => mapStore.selectedPin?.id === $props.location?.
       {{ location?.name }}
     </h2>
     <p>{{ location?.description || '...' }}</p>
-  </article>
+  </NuxtLink>
 </template>

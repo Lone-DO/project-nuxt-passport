@@ -1,4 +1,7 @@
 import type { User } from 'better-auth';
+import type { RouteLocationRaw } from 'vue-router';
+
+import type { location } from './db/schema';
 
 declare module 'h3' {
   /** Override H3EventContext.user type to int */
@@ -17,12 +20,16 @@ export type LatLongPin = {
 
 export type MapPin = {
   id: number;
-  label: string;
+  name: string;
   description: string | null;
+  slug?: string;
+  to?: RouteLocationRaw;
+  toLabel?: string;
 } & LatLongPin;
 
 export type Icons = {
   add: string;
+  addPath: string;
   map: string;
   pin: string;
   pointerEvent: string;
@@ -51,3 +58,12 @@ export type NominatimResult = {
   display_name: string;
   boundingbox: string[];
 };
+
+export type NavigationItem = {
+  id: number;
+  name: string;
+  icon: string;
+  href?: string;
+  to?: RouteLocationRaw;
+  mapPin: location;
+} & LatLongPin;

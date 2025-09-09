@@ -56,7 +56,7 @@ function syncSelectedLocation(result: NominatimResult) {
   setFieldValue('name', result.display_name);
   mapStore.newPin = {
     id: 1,
-    label: 'Added Point',
+    name: 'Added Point',
     description: '',
     long: Number(result.lon),
     lat: Number(result.lat),
@@ -84,7 +84,7 @@ onMounted(() => {
   /** onMount, stage global instance */
   mapStore.newPin = {
     id: 0,
-    label: '',
+    name: '',
     description: '',
     long,
     lat,

@@ -1,12 +1,15 @@
 <script lang='ts' setup>
-const $props = defineProps({
-  name: { type: String, required: true },
-  size: { type: String, default: '24' },
-  href: { type: String, required: true },
-  label: { type: String, default: null },
-  hasOverride: { type: Boolean, default: false },
-  showLabel: { type: Boolean, default: true },
-});
+import type { RouteLocationRaw } from 'vue-router';
+
+const $props = defineProps<{
+  iconName: string;
+  size?: string;
+  href?: string;
+  to?: RouteLocationRaw;
+  name: string;
+  hasOverride?: boolean;
+  showLabel: boolean;
+}>();
 
 const route = useRoute();
 const isActive = computed(() => route.fullPath === $props.href);
@@ -16,21 +19,21 @@ const isActive = computed(() => route.fullPath === $props.href);
   <div
     class="tooltip-right w-full"
     :class="{ 'tooltip': !showLabel, 'tooltip-open': hasOverride }"
-    :data-tip="!showLabel ? label : null"
+    :data-tip="!showLabel ? name : null"
   >
     <NuxtLink
-      :to="$props.href"
+      :to="href || to || '#'"
       class="btn flex-nowrap w-full"
       :class="[{ 'bg-base-300': isActive, 'justify-start': showLabel, 'justify-center': !showLabel }]"
     >
       <Icon
-        :name="$props.name"
-        :size="$props.size"
-        :alt="$props.name"
+        :name="iconName"
+        :size="size || '24'"
+        :alt="iconName"
       />
       <transition name="grow">
         <span v-if="showLabel" class="text-nowrap">
-          <slot><span>{{ label }}</span></slot>
+          <slot><span>{{ name }}</span></slot>
         </span>
       </transition>
     </NuxtLink>

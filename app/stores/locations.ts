@@ -1,4 +1,4 @@
-import type { MapPin } from '~/lib/types';
+import type { MapPin, NavigationItem } from '~/lib/types';
 
 import { useMapStore } from './map';
 
@@ -21,21 +21,31 @@ export const useLocationStore = defineStore('useLocationStore', () => {
       const navItems: NavigationItem[] = [];
       const mapPins: MapPin[] = [];
       items.value.forEach((location) => {
+        const mapPin = {
+          ...location,
+          to: { name: 'dashboard-location-slug', params: { slug: location?.slug } },
+          toLabel: 'View',
+        };
         navItems.push({
           id: location.id,
           name: location.name,
           icon: '',
-          href: '#',
+          to: { name: 'dashboard-location-slug', params: { slug: location?.slug } },
           lat: location.lat,
           long: location.long,
+          mapPin,
         });
-        mapPins.push({
-          id: location.id,
-          label: location.name,
-          description: location.description,
-          lat: location.lat,
-          long: location.long,
-        });
+        /** WHEN no slug param exist, assign All pins */
+        if (!mapStore.currentSlug) {
+          mapPins.push(mapPin);
+        }
+        /**
+         * ELSE only assign current Pin
+         * This controls the mapClient's initial focus
+         */
+        else if (mapPin.slug === mapStore.currentSlug) {
+          mapPins.push(mapPin);
+        }
       });
       navigationStore.items = navItems;
       navigationStore.loading = false;
