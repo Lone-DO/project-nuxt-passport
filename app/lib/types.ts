@@ -18,7 +18,7 @@ export type LatLongPin = {
 
 export type MapPin = {
   id: number;
-  label: string;
+  name: string;
   description: string | null;
 } & LatLongPin;
 

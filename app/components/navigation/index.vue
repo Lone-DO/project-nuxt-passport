@@ -19,14 +19,14 @@ onMounted(() => {
     <NavigationToggle v-model="collapsed" />
     <nav class="flex flex-col gap-1">
       <NavigationButton
-        :name="icons.map"
-        label="Locations"
+        :icon-name="icons.map"
+        name="Locations"
         href="/dashboard"
         :show-label="!collapsed"
       />
       <NavigationButton
-        :name="icons.add"
-        label="Add Location"
+        :icon-name="icons.add"
+        name="Add Location"
         href="/dashboard/new"
         :show-label="!collapsed"
       />
@@ -49,8 +49,8 @@ onMounted(() => {
       </template>
       <div class="divider" />
       <NavigationButton
-        :name="icons.logout"
-        label="Sign Out"
+        :icon-name="icons.logout"
+        name="Sign Out"
         href="/signout"
         :show-label="!collapsed"
       />

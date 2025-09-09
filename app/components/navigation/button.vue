@@ -2,11 +2,11 @@
 import type { RouteLocationRaw } from 'vue-router';
 
 const $props = defineProps<{
-  name: string;
+  iconName: string;
   size?: string;
   href?: string;
   to?: RouteLocationRaw;
-  label: string;
+  name: string;
   hasOverride?: boolean;
   showLabel: boolean;
 }>();
@@ -19,7 +19,7 @@ const isActive = computed(() => route.fullPath === $props.href);
   <div
     class="tooltip-right w-full"
     :class="{ 'tooltip': !showLabel, 'tooltip-open': hasOverride }"
-    :data-tip="!showLabel ? label : null"
+    :data-tip="!showLabel ? name : null"
   >
     <NuxtLink
       :to="href || to || '#'"
@@ -27,13 +27,13 @@ const isActive = computed(() => route.fullPath === $props.href);
       :class="[{ 'bg-base-300': isActive, 'justify-start': showLabel, 'justify-center': !showLabel }]"
     >
       <Icon
-        :name="name"
+        :name="iconName"
         :size="size || '24'"
-        :alt="name"
+        :alt="iconName"
       />
       <transition name="grow">
         <span v-if="showLabel" class="text-nowrap">
-          <slot><span>{{ label }}</span></slot>
+          <slot><span>{{ name }}</span></slot>
         </span>
       </transition>
     </NuxtLink>

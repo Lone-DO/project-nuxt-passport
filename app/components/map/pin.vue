@@ -18,7 +18,7 @@ const coordinates = computed<LngLatLike>(() => [$props.pin?.long || 0, $props.pi
       <div
         class="tooltip tooltip-top"
         :class="{ 'tooltip-open': isSelected }"
-        :data-tip="pin.label"
+        :data-tip="pin.name"
         @mouseenter="mapStore.syncPin(pin, true, false)"
         @mouseleave="mapStore.syncPin(pin, false, false)"
       >
@@ -31,7 +31,7 @@ const coordinates = computed<LngLatLike>(() => [$props.pin?.long || 0, $props.pi
     </template>
     <MglPopup>
       <h3 class="text-2xl">
-        {{ pin.label }}
+        {{ pin.name }}
       </h3>
       <p v-if="pin.description">
         {{ pin.description }}

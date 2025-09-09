@@ -15,8 +15,8 @@ const { icons } = storeToRefs(appStore);
 <template>
   <li class="navigation-location-item">
     <NavigationButton
-      :name="location.icon || icons.pin"
-      :label="location.name"
+      :icon-name="location.icon || icons.pin"
+      :name="location.name"
       :href="location.href"
       :to="location.to"
       :show-label="!collapsed"
