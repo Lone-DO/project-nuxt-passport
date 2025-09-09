@@ -64,9 +64,12 @@ export async function injectLocation(data: InsertLocation, slug: string, userId:
   }
 }
 
-export async function findLocation(userId: number, locationId: number) {
+export async function findLocation(userId: number, slugId: string) {
   return db.query.location.findFirst({
-    where: and(eq(location.userId, userId), eq(location.id, locationId)),
+    where: and(eq(location.userId, userId), eq(location.slug, slugId)),
+    with: {
+      locationLogs: true,
+    },
   });
 }
 export async function findLocations(userId: number) {
@@ -74,7 +77,3 @@ export async function findLocations(userId: number) {
     where: eq(location.userId, userId),
   });
 }
-
-/** Types */
-
-export type location = Awaited<ReturnType<typeof findLocation>>;

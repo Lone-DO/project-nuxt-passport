@@ -1,6 +1,8 @@
 import type { User } from 'better-auth';
 import type { RouteLocationRaw } from 'vue-router';
 
+import type { location } from './db/schema';
+
 declare module 'h3' {
   /** Override H3EventContext.user type to int */
   // eslint-disable-next-line ts/consistent-type-definitions
@@ -20,10 +22,14 @@ export type MapPin = {
   id: number;
   name: string;
   description: string | null;
+  slug?: string;
+  to?: RouteLocationRaw;
+  toLabel?: string;
 } & LatLongPin;
 
 export type Icons = {
   add: string;
+  addPath: string;
   map: string;
   pin: string;
   pointerEvent: string;
@@ -59,4 +65,5 @@ export type NavigationItem = {
   icon: string;
   href?: string;
   to?: RouteLocationRaw;
+  mapPin: location;
 } & LatLongPin;

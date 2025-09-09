@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type { location } from '~/lib/db/queries';
+import type { location } from '~/lib/db/schema';
 
 const $props = defineProps<{
   location: location;
