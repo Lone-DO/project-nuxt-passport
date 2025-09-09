@@ -1,20 +1,14 @@
 <script setup lang='ts'>
 const appStore = useAppStore();
-const mapStore = useMapStore();
-const route = useRoute();
-const slug = computed(() => route.params.slug);
-const { data: location, status, error, refresh } = await useFetch(`/api/locations/${slug.value}`, {
-  lazy: true,
-});
+const locationStore = useLocationStore();
 
+const { currentItem: item, currentItemError: error, currentItemStatus: status } = storeToRefs(locationStore);
 const busy = computed(() => status.value === 'pending');
 
-watch(slug, async () => refresh());
-watch(location, async () => {
-  if (location.value) {
-    mapStore.pins = [location.value];
-  }
-});
+watch(() => locationStore.locationUrlWithSlug, () => {
+  /** onRouteParams change, refresh current location */
+  locationStore.refreshCurrentItem();
+}, { immediate: true });
 </script>
 
 <template>
@@ -26,14 +20,14 @@ watch(location, async () => {
       class="alert alert-error justify-center"
     > {{ error.statusMessage }}</span>
 
-    <template v-if="!busy && location">
+    <template v-if="!busy && item">
       <h4 class="mb-3">
-        Location: {{ location.name }}
+        Location: {{ item.name }}
       </h4>
       <p class="text-sm">
-        {{ location.description }}
+        {{ item.description }}
       </p>
-      <div v-if="!location.locationLogs.length" class="text-sm">
+      <div v-if="!item.locationLogs.length" class="text-sm">
         <i class="inline-block italic w-full">Add a location log to get started</i>
         <button class="btn btn-neutral mt-1">
           Add Location Log <Icon :name="appStore.icons.addPath" size="20" />

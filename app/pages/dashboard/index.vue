@@ -1,11 +1,9 @@
 <script setup lang='ts'>
 const locationsStore = useLocationStore();
-const { items, status } = storeToRefs(locationsStore);
+const { items, itemsStatus: status } = storeToRefs(locationsStore);
 const isLoading = computed(() => status.value === 'pending');
 
-onMounted(() => {
-  locationsStore.refreshLocations();
-});
+onMounted(locationsStore.refreshItems);
 </script>
 
 <template>

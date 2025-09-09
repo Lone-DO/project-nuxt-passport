@@ -64,7 +64,7 @@ export const useMapStore = defineStore('useMapStore', () => {
     effect(() => {
       /** Targeted Animation onHover events */
       /** * ONLY Enable Animations while on Root Dashboard */
-      if (route.path !== '/dashboard') {
+      if (route.name !== 'dashboard') {
         return;
       }
 
