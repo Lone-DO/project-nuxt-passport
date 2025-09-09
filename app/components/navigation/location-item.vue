@@ -9,10 +9,11 @@ const $props = defineProps<{
 const appStore = useAppStore();
 const mapStore = useMapStore();
 const isSelected = computed(() => mapStore.isSelected($props.location));
+const isCurrentSlug = computed(() => !mapStore.currentSlug || mapStore.currentSlug === $props.location.mapPin.slug);
 </script>
 
 <template>
-  <li class="navigation-location-item">
+  <li v-show="isCurrentSlug" class="navigation-location-item">
     <NavigationButton
       :icon-name="location.icon || appStore.icons.pin"
       :name="location.name"

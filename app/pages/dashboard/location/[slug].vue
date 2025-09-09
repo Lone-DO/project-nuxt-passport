@@ -34,7 +34,7 @@ watch(location, async () => {
         {{ location.description }}
       </p>
       <div v-if="!location.locationLogs.length" class="text-sm">
-        <i class="italic">Add a location log to get started</i>
+        <i class="inline-block italic w-full">Add a location log to get started</i>
         <button class="btn btn-neutral mt-1">
           Add Location Log <Icon :name="appStore.icons.addPath" size="20" />
         </button>
