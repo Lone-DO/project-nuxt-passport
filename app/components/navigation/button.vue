@@ -23,13 +23,14 @@ const isActive = computed(() => route.fullPath === $props.href);
   >
     <NuxtLink
       :to="href || to || '#'"
-      class="btn flex-nowrap w-full"
+      class="btn flex-nowrap w-full p-3"
       :class="[{ 'bg-base-300': isActive, 'justify-start': showLabel, 'justify-center': !showLabel }]"
     >
       <Icon
         :name="iconName"
-        :size="size || '24'"
+        :size="size || '20'"
         :alt="iconName"
+        class="min-w-7"
       />
       <transition name="grow">
         <span v-if="showLabel" class="text-nowrap">
