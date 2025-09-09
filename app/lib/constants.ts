@@ -6,6 +6,7 @@ export const CENTER_GERMANY: LngLatLike = [10.4541194, 51.1642292];
 
 export const LIGHT_MODE_ICONS: Icons = {
   add: 'majesticons:map-marker-plus',
+  addPath: 'majesticons:map-marker-path',
   map: 'majesticons:map',
   pin: 'majesticons:map-simple-marker',
   pointerEvent: 'majesticons:hand-pointer-event',
@@ -20,6 +21,7 @@ export const LIGHT_MODE_ICONS: Icons = {
 
 export const DARK_MODE_ICONS: Icons = {
   add: 'majesticons:map-marker-plus-line',
+  addPath: 'majesticons:map-marker-path-line',
   map: 'majesticons:map-line',
   pin: 'majesticons:map-simple-marker-line',
   pointerEvent: 'majesticons:hand-pointer-event-line',
