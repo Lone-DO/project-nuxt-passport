@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import type { FetchError } from 'ofetch';
+import type { RouteLocationRaw } from 'vue-router';
 
 import type { NominatimResult } from '~/lib/types';
 
@@ -8,7 +9,10 @@ import getFetchErrorMessage from '~/utils/get-fetch-error';
 
 const $props = defineProps<{
   location: InsertLocation;
+  cancelTo: RouteLocationRaw;
   callback: (values: InsertLocation) => Promise<any>;
+  submitLabel: string;
+  submitIcon: string;
 }>();
 const $emit = defineEmits(['select', 'submit', 'submitted']);
 const busy = ref(false);
@@ -83,7 +87,10 @@ effect(() => {
   <LocationForm
     :errors
     :busy
+    :cancel-to
     :controlled-values
+    :submit-label
+    :submit-icon
     @submit="onSubmit"
   />
   <div class="divider" />

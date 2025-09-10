@@ -1,11 +1,16 @@
 <script lang='ts' setup>
+import type { RouteLocationRaw } from 'vue-router';
+
 defineProps<{
+  cancelTo: RouteLocationRaw;
   errors: {
     name?: string;
     description?: string;
     lat?: string;
     long?: string;
   };
+  submitLabel: string;
+  submitIcon: string;
   controlledValues: any;
   busy?: boolean;
 }>();
@@ -13,9 +18,6 @@ defineProps<{
 const $emit = defineEmits(['submit']);
 
 const onSubmit = (...data: any[]) => $emit('submit', ...data);
-
-const appStore = useAppStore();
-const { icons } = storeToRefs(appStore);
 </script>
 
 <template>
@@ -39,24 +41,23 @@ const { icons } = storeToRefs(appStore);
     />
     <LocationCoordinatesField :lat="controlledValues.lat" :long="controlledValues.long" />
     <div class="flex justify-end gap-2">
-      <button
+      <NuxtLink
         class="btn btn-outline"
-        type="button"
-        :disabled="busy"
-        @click="navigateTo('/dashboard')"
+        :disabled="busy || null"
+        :to="cancelTo"
       >
         <Icon name="majesticons:arrow-left" />Cancel
-      </button>
+      </NuxtLink>
       <button
         class="btn btn-primary"
         type="submit"
         :disabled="busy"
       >
-        Add
+        {{ submitLabel }}
         <span v-if="busy" class="loading loading-spinner loading-md" />
         <Icon
           v-else
-          :name="icons.add"
+          :name="submitIcon"
           size="20"
         />
       </button>

@@ -8,6 +8,7 @@ const [long, lat] = CENTER_GERMANY as [number, number];
 
 const { $csrfFetch } = useNuxtApp();
 const mapStore = useMapStore();
+const appStore = useAppStore();
 const isReady = ref(false);
 
 function onSubmit(values: InsertLocation) {
@@ -60,6 +61,9 @@ onMounted(() => {
       v-if="isReady"
       :location="mapStore.newPin"
       :callback="onSubmit"
+      cancel-to="/dashboard"
+      submit-label="Add"
+      :submit-icon="appStore.icons.add"
       @select="syncSelectedLocation"
       @submitted="onSubmitted"
     />
