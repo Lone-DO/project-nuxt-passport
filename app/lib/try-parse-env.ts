@@ -1,4 +1,4 @@
-/** https://github.com/w3cj/nuxt-travel-log/pull/51/commits/33af03ac274544851b9652319ec0d257cbab8449 */
+/** https://raw.githubusercontent.com/w3cj/nuxt-travel-log/33af03ac274544851b9652319ec0d257cbab8449/lib/try-parse-env.ts */
 
 /* eslint-disable node/no-process-env */
 import type { ZodObject, ZodRawShape } from 'zod';
