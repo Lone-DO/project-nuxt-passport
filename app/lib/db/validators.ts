@@ -41,9 +41,10 @@ export async function validateLocationPayload(event: H3Event<EventHandlerRequest
   return result.data;
 }
 
-export async function validateUniqueLocationName(name: string, id: number) {
+export async function validateUniqueLocationName(name: string, id: number, slug?: string) {
   /** Verify that location.name is UNIQUE */
-  if (await findLocationByName(name, Number(id))) {
+  const found = await findLocationByName(name, Number(id));
+  if (found && found.slug !== slug) {
     throw createError({
       status: 409,
       statusMessage: 'Invalid Location Name',

@@ -1,7 +1,9 @@
 <script setup lang='ts'>
+import { EDITING_ROUTES } from '~/lib/constants';
+
 const appStore = useAppStore();
 const locationStore = useLocationStore();
-
+const $route = useRoute();
 const { currentItem: item, currentItemError: error, currentItemStatus: status } = storeToRefs(locationStore);
 const busy = computed(() => status.value === 'pending');
 
@@ -9,6 +11,8 @@ watch(() => locationStore.locationUrlWithSlug, () => {
   /** onRouteParams change, refresh current location */
   locationStore.refreshCurrentItem();
 }, { immediate: true });
+
+const isEditing = computed(() => EDITING_ROUTES.has($route.name as string));
 </script>
 
 <template>
@@ -20,12 +24,12 @@ watch(() => locationStore.locationUrlWithSlug, () => {
       class="alert alert-error justify-center"
     > {{ error.statusMessage }}</span>
 
-    <template v-if="!busy && item">
+    <template v-if="!busy && item && !isEditing">
       <h4 class="mb-3">
         Location: {{ item.name }}
       </h4>
       <p class="text-sm">
-        {{ item.description }}
+        Description: {{ item.description || '--' }}
       </p>
       <div v-if="!item.locationLogs.length" class="text-sm">
         <i class="inline-block italic w-full">Add a location log to get started</i>
@@ -34,5 +38,6 @@ watch(() => locationStore.locationUrlWithSlug, () => {
         </button>
       </div>
     </template>
+    <NuxtPage v-if="!busy && item && isEditing" />
   </article>
 </template>

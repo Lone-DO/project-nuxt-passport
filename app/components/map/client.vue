@@ -1,11 +1,12 @@
 <script setup lang='ts'>
 import type { MglEvent } from '@indoorequal/vue-maplibre-gl';
 
+import { EDITING_ROUTES } from '~/lib/constants';
 import { useMapStore } from '~/stores/map';
 
 const mapStore = useMapStore();
 const route = useRoute();
-const addingNewLocation = computed(() => route.path === '/dashboard/new');
+const addingNewLocation = computed(() => EDITING_ROUTES.has(route.name as string));
 
 function syncCords(clickEvt: MglEvent<'dblclick'>) {
   if (mapStore.newPin) {

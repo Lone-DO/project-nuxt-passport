@@ -37,6 +37,7 @@ export type Icons = {
   search: string;
   searchPin: string;
   settings: string;
+  settingsSave: string;
   navToggle: {
     left: string;
     right: string;

@@ -17,13 +17,13 @@ const isActive = computed(() => route.fullPath === $props.href);
 
 <template>
   <div
-    class="tooltip-right w-full"
+    class="tooltip-right w-full flex flex-col"
     :class="{ 'tooltip': !showLabel, 'tooltip-open': hasOverride }"
     :data-tip="!showLabel ? name : null"
   >
     <NuxtLink
       :to="href || to || '#'"
-      class="btn flex-nowrap w-full p-3"
+      class="btn p-3"
       :class="[{ 'bg-base-300': isActive, 'justify-start': showLabel, 'justify-center': !showLabel }]"
     >
       <Icon
@@ -33,9 +33,9 @@ const isActive = computed(() => route.fullPath === $props.href);
         class="min-w-7"
       />
       <transition name="grow">
-        <span v-if="showLabel" class="text-nowrap">
-          <slot><span>{{ name }}</span></slot>
-        </span>
+        <p v-if="showLabel" class="text-ellipsis overflow-hidden whitespace-nowrap">
+          {{ name }}
+        </p>
       </transition>
     </NuxtLink>
   </div>
