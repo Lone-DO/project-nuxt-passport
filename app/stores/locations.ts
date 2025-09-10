@@ -1,7 +1,7 @@
 import type { locationWithLogs } from '~/lib/db/schema';
 import type { MapPin, NavigationItem } from '~/lib/types';
 
-import { NAVIGATION_BASE_ITEMS, NAVIGATION_EDIT_ITEMS } from '~/lib/constants';
+import { NAVIGATION_BASE_ITEMS, NAVIGATION_CURRENT_ITEMS } from '~/lib/constants';
 
 import { useMapStore } from './map';
 
@@ -54,7 +54,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
       navigationStore.loading = false;
       mapStore.pins = mapPins;
     }
-    else if (currentItem.value && NAVIGATION_EDIT_ITEMS.has($route.name as string)) {
+    else if (currentItem.value && NAVIGATION_CURRENT_ITEMS.has($route.name as string)) {
       navigationStore.items = [];
       mapStore.pins = [currentItem.value];
     }
