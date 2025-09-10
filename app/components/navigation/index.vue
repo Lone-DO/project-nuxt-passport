@@ -1,10 +1,12 @@
 <script lang='ts' setup>
 const appStore = useAppStore();
+const locationStore = useLocationStore();
 const navStore = useNavigationStore();
 
 const { icons } = storeToRefs(appStore);
 
 const collapsed = ref(false);
+const $route = useRoute();
 
 onMounted(() => {
   collapsed.value = localStorage.getItem('nav-collapsed') === 'true';
@@ -27,8 +29,9 @@ onMounted(() => {
         :to="nav.to"
         :show-label="!collapsed"
       />
+      <div v-if="$route.name?.toString().includes('dashboard-location') && locationStore.currentItemStatus === 'pending'" class="skeleton h-10 w-full" />
       <template v-if="navStore.loading || navStore.items.length">
-        <li class="divider" />
+        <div class="divider" />
         <!-- TODO: Add Mobile/Tablet Max Height adjustments -->
         <ul class="flex flex-col gap-1 ">
           <client-only>
