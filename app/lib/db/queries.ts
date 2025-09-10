@@ -63,6 +63,22 @@ export async function injectLocation(data: InsertLocation, slug: string, userId:
     throw error;
   }
 }
+export async function updateLocationBySlug(data: InsertLocation, oldSlug: string, slug: string, userId: number) {
+  try {
+    const [updated] = await db.update(location).set({ ...data, slug }).where(and(eq(location.slug, oldSlug), eq(location.userId, userId))).returning();
+    return updated;
+  }
+  catch (_error) {
+    const error = _error as DrizzleError;
+    if (error.message.includes('UNIQUE constraint failed: location.slug')) {
+      throw createError({
+        statusCode: 409,
+        statusMessage: 'Slug must be unique (the location name is used to generate the slug).',
+      });
+    }
+    throw error;
+  }
+}
 
 export async function findLocation(userId: number, slugId: string) {
   return db.query.location.findFirst({
