@@ -7,7 +7,7 @@ const $route = useRoute();
 const isLocationListPage = computed(() => $route.name === 'dashboard');
 
 const { icons } = storeToRefs(useAppStore());
-const { currentItem } = storeToRefs(locationStore);
+const { currentItem, currentItemStatus } = storeToRefs(locationStore);
 onMounted(() => {
   if (!isLocationListPage.value) {
     /** WHEN user initially loads on page beyond the Location List, Force fetch */
@@ -35,37 +35,40 @@ effect(() => {
       name: 'Back to Locations',
       href: '/dashboard',
       icon: 'majesticons:arrow-left',
-    }, {
-      id: 'link-dashboard-slug',
-      name: currentItem.value ? currentItem.value.name : 'Loading...',
-      to: {
-        name: 'dashboard-location-slug',
-        params: {
-          slug: $route.params.slug,
-        },
-      },
-      icon: icons.value.pin,
-    }, {
-      id: 'link-location-edit',
-      name: 'Edit Location',
-      to: {
-        name: 'dashboard-location-slug-edit',
-        params: {
-          slug: $route.params.slug,
-        },
-      },
-      icon: icons.value.settings,
-    }, {
-      id: 'link-location-new',
-      name: 'Add Location Log',
-      to: {
-        name: 'dashboard-location-slug-new',
-        params: {
-          slug: $route.params.slug,
-        },
-      },
-      icon: icons.value.addPath,
     }];
+    if (currentItem.value && currentItemStatus.value !== 'pending') {
+      navigationStore.topItems.push({
+        id: 'link-dashboard-slug',
+        name: currentItem.value ? currentItem.value.name : 'Loading...',
+        to: {
+          name: 'dashboard-location-slug',
+          params: {
+            slug: $route.params.slug,
+          },
+        },
+        icon: icons.value.pin,
+      }, {
+        id: 'link-location-edit',
+        name: 'Edit Location',
+        to: {
+          name: 'dashboard-location-slug-edit',
+          params: {
+            slug: $route.params.slug,
+          },
+        },
+        icon: icons.value.settings,
+      }, {
+        id: 'link-location-new',
+        name: 'Add Location Log',
+        to: {
+          name: 'dashboard-location-slug-new',
+          params: {
+            slug: $route.params.slug,
+          },
+        },
+        icon: icons.value.addPath,
+      });
+    }
   }
 });
 </script>
