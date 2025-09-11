@@ -82,7 +82,7 @@ effect(() => {
         'flex-col': isLocationListPage,
       }"
     >
-      <NuxtPage class="flex-1 max-w-md" />
+      <NuxtPage class="flex-1" />
       <MapClient class="flex-1" />
     </div>
   </section>
