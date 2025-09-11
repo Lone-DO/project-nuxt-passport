@@ -18,9 +18,9 @@ function syncCords(clickEvt: MglEvent<'dblclick'>) {
 <template>
   <LazyClientOnly>
     <template #fallback>
-      <section class="skeleton flex-1" />
+      <section class="skeleton " />
     </template>
-    <section id="map-client" class="flex-1">
+    <section id="map-client">
       <MglMap
         :map-style="mapStore.style"
         :center="mapStore.center"

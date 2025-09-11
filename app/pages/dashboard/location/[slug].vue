@@ -59,7 +59,7 @@ const onDelete = handleSubmit(async () => {
 </script>
 
 <template>
-  <article id="dashboard-location-slug" class="flex flex-col gap-2 flex-1 max-w-md">
+  <article id="dashboard-location-slug" class="flex flex-col gap-2">
     <span v-if="isLoading" class="loading loading-spinner loading-md" />
     <span
       v-if="!isLoading && errorMessage"
@@ -81,9 +81,17 @@ const onDelete = handleSubmit(async () => {
       </p>
       <div v-if="!item.locationLogs.length" class="text-sm">
         <i class="inline-block italic w-full">Add a location log to get started</i>
-        <button class="btn btn-neutral mt-1">
+        <NuxtLink
+          class="btn btn-neutral mt-1"
+          :to="{
+            name: 'dashboard-location-slug-new',
+            params: {
+              slug: $route.params.slug,
+            },
+          }"
+        >
           Add Location Log <Icon :name="appStore.icons.addPath" size="20" />
-        </button>
+        </NuxtLink>
       </div>
     </template>
     <NuxtPage v-if="!isLoading && item && isEditing" />

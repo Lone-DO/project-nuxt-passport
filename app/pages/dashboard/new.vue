@@ -50,7 +50,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <article id="dashboard-new" class="flex-1 max-w-md">
+  <article id="dashboard-new">
     <h4 class="mb-4">
       Add Location
     </h4>
