@@ -25,12 +25,8 @@ const isModalOpen = ref(false);
 const dropdownItems: DropdownItem[] = [{
   icon: appStore.icons.delete,
   label: 'Delete',
-  onClick: openModal,
+  onClick: () => (isModalOpen.value = true),
 }];
-function openModal() {
-  isModalOpen.value = true;
-  (document.activeElement as HTMLAnchorElement).blur();
-}
 
 /** Form */
 const deleted = ref(false);
@@ -38,7 +34,6 @@ const { handleSubmit } = useForm();
 
 const onDelete = handleSubmit(async () => {
   try {
-    isModalOpen.value = false;
     deleteError.value = null;
     isDeleting.value = true;
     await $fetch(`/api/locations/${item.value?.slug}`, {
@@ -59,7 +54,7 @@ const onDelete = handleSubmit(async () => {
 </script>
 
 <template>
-  <article id="dashboard-location-slug" class="flex flex-col gap-2">
+  <article id="dashboard-location-slug" class="max-w-md flex flex-col gap-2">
     <span v-if="isLoading" class="loading loading-spinner loading-md" />
     <span
       v-if="!isLoading && errorMessage"
@@ -72,6 +67,7 @@ const onDelete = handleSubmit(async () => {
         :location="item"
         :is-open="isModalOpen"
         @accept="onDelete"
+        @on-closed="isModalOpen = false"
       />
       <h4 class="mb-3">
         Location: {{ item.name }} <AppDropdown :items="dropdownItems" />
