@@ -1,6 +1,9 @@
 <script lang='ts' setup>
-import type { InsertLocation, location } from '~/lib/db/schema';
+import type { location } from '~/lib/db/schema';
 import type { NominatimResult } from '~/lib/types';
+
+import { NEW_FORM_LOCATION_FIELDS } from '~/lib/constants';
+import { InsertLocation } from '~/lib/db/schema';
 
 const { $csrfFetch } = useNuxtApp();
 const appStore = useAppStore();
@@ -54,9 +57,11 @@ onUnmounted(() => {
   <article id="dashboard-new" class="flex-1 max-w-md">
     <LocationFormBase
       v-if="isReady"
-      :location="mapStore.newPin"
+      :value="mapStore.newPin"
       :callback="onSubmit"
       :cancel-to="{ name: 'dashboard-location-slug', params: { slug: mapStore.currentSlug } }"
+      :fields="NEW_FORM_LOCATION_FIELDS"
+      :schema="InsertLocation"
       submit-label="Update"
       :submit-icon="appStore.icons.settingsSave"
       @select="syncSelectedLocation"

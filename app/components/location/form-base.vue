@@ -1,18 +1,20 @@
-<script setup lang='ts'>
+<script setup lang='ts' generic='T extends LatLongPin'>
 import type { FetchError } from 'ofetch';
 import type { RouteLocationRaw } from 'vue-router';
+import type { ZodSchema } from 'zod';
 
-import type { NominatimResult } from '~/lib/types';
+import type { Field, LatLongPin, NominatimResult } from '~/lib/types';
 
-import { InsertLocation } from '~/lib/db/schema';
 import getFetchErrorMessage from '~/utils/get-fetch-error';
 
 const $props = defineProps<{
-  location: InsertLocation;
+  value: T;
   cancelTo: RouteLocationRaw;
-  callback: (values: InsertLocation) => Promise<any>;
+  fields: Field[];
+  callback: (values: T) => Promise<any>;
   submitLabel: string;
   submitIcon: string;
+  schema: ZodSchema;
 }>();
 const $emit = defineEmits(['select', 'submit', 'submitted']);
 const busy = ref(false);
@@ -22,9 +24,9 @@ const submitError = ref<string | null>('');
 /** Handlers */
 
 const { handleSubmit, errors, meta, setErrors, setFieldValue, controlledValues } = useForm({
-  validationSchema: toTypedSchema(InsertLocation),
+  validationSchema: toTypedSchema($props.schema),
   /** Stage initial values to prevent form dirty during init */
-  initialValues: $props.location,
+  initialValues: $props.value,
 });
 
 const onSubmit = handleSubmit(async (values) => {
@@ -69,9 +71,9 @@ onBeforeRouteLeave(() => {
 
 effect(() => {
   /** onChange via MapClient events, update form Long/Lat values */
-  if ($props.location) {
-    setFieldValue('long', $props.location.long);
-    setFieldValue('lat', $props.location.lat);
+  if ($props.value) {
+    setFieldValue('long', $props.value.long);
+    setFieldValue('lat', $props.value.lat);
   }
 });
 </script>
@@ -89,6 +91,7 @@ effect(() => {
     :busy
     :cancel-to
     :controlled-values
+    :fields
     :submit-label
     :submit-icon
     @submit="onSubmit"

@@ -78,3 +78,9 @@ export type NavigationItem = {
   to?: RouteLocationRaw;
   mapPin?: location;
 };
+
+export type Field = {
+  key: string;
+  label: string;
+  type: 'text' | 'textarea';
+};

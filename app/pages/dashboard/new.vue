@@ -1,8 +1,8 @@
 <script lang='ts' setup>
-import type { InsertLocation } from '~/lib/db/schema';
 import type { NominatimResult } from '~/lib/types';
 
-import { CENTER_GERMANY } from '~/lib/constants';
+import { CENTER_GERMANY, NEW_FORM_LOCATION_FIELDS } from '~/lib/constants';
+import { InsertLocation } from '~/lib/db/schema';
 
 const [long, lat] = CENTER_GERMANY as [number, number];
 
@@ -59,9 +59,11 @@ onMounted(() => {
     </p>
     <LocationFormBase
       v-if="isReady"
-      :location="mapStore.newPin"
+      :value="mapStore.newPin"
       :callback="onSubmit"
       cancel-to="/dashboard"
+      :fields="NEW_FORM_LOCATION_FIELDS"
+      :schema="InsertLocation"
       submit-label="Add"
       :submit-icon="appStore.icons.add"
       @select="syncSelectedLocation"

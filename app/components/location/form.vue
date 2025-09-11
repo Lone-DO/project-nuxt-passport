@@ -1,6 +1,8 @@
 <script lang='ts' setup>
 import type { RouteLocationRaw } from 'vue-router';
 
+import type { Field } from '~/lib/types';
+
 defineProps<{
   cancelTo: RouteLocationRaw;
   errors: {
@@ -9,6 +11,7 @@ defineProps<{
     lat?: string;
     long?: string;
   };
+  fields: Field[];
   submitLabel: string;
   submitIcon: string;
   controlledValues: any;
@@ -27,16 +30,12 @@ const onSubmit = (...data: any[]) => $emit('submit', ...data);
     @submit.prevent="onSubmit"
   >
     <AppFormField
-      name="name"
-      label="Name"
-      :error="errors.name"
-      :disabled="busy"
-    />
-    <AppFormField
-      name="description"
-      label="Description"
-      type="textarea"
-      :error="errors.description"
+      v-for="field in fields"
+      :key="field.key"
+      :name="field.key"
+      :label="field.label"
+      :type="field.type"
+      :error="errors[field.key as keyof object]"
       :disabled="busy"
     />
     <LocationCoordinatesField :lat="controlledValues.lat" :long="controlledValues.long" />
