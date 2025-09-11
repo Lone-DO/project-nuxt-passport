@@ -3,7 +3,7 @@ import type { EventHandlerRequest, H3Event } from 'h3';
 import sendZodError from '~/utils/send-zod-error';
 
 import { auth } from '../auth';
-import { findLocationByName } from './queries';
+import { findLocationByName, findLocationBySlug } from './queries';
 import { InsertLocation } from './schema';
 
 export async function validateUserSession(event: H3Event<EventHandlerRequest>) {
@@ -49,6 +49,18 @@ export async function validateUniqueLocationName(name: string, id: number, slug?
       status: 409,
       statusMessage: 'Invalid Location Name',
       data: { name: 'A location with that name already exist' },
+    });
+  }
+  return true;
+}
+
+export async function validateLocationOwnership(name: string, id: number) {
+  /** Verify that location.name is UNIQUE */
+  const found = await findLocationBySlug(name, Number(id));
+  if (!found) {
+    throw createError({
+      status: 404,
+      statusMessage: 'Location not Found',
     });
   }
   return true;

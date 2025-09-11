@@ -18,6 +18,14 @@ export type LatLongPin = {
   long: number;
 };
 
+export type DropdownItem = {
+  icon: string;
+  label: string;
+  to?: RouteLocationRaw;
+  size?: string;
+  onClick?: () => any;
+};
+
 export type MapPin = {
   id: number;
   name: string;
@@ -30,6 +38,7 @@ export type MapPin = {
 export type Icons = {
   add: string;
   addPath: string;
+  delete: string;
   map: string;
   pin: string;
   pointerEvent: string;

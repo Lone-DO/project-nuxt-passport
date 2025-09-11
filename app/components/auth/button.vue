@@ -1,33 +1,34 @@
 <script lang='ts' setup>
+import type { DropdownItem } from '~/lib/types';
+
 import { useAuthStore } from '~/stores';
 
 const authStore = useAuthStore();
 const appStore = useAppStore();
+
+const dropdownItems: DropdownItem[] = [
+  {
+    icon: appStore.icons.logout,
+    label: 'Sign Out',
+    to: '/signout',
+  },
+];
 </script>
 
 <template>
-  <details v-if="!authStore.loading && authStore.user" class="auth-button dropdown dropdown-end">
-    <summary class="btn m-1">
-      <div class="avatar">
-        <div class="mask mask-hexagon-2 w-8">
-          <img :src="authStore.user.image || ''" :alt="authStore.user.name">
-        </div>
+  <AppDropdown
+    v-if="!authStore.loading && authStore.user"
+    class="auth-button dropdown-end"
+    :items="dropdownItems"
+    :list-classes="['w-52']"
+  >
+    <div class="avatar">
+      <div class="mask mask-hexagon-2 w-8">
+        <img :src="authStore.user.image || ''" :alt="authStore.user.name">
       </div>
-      <span>{{ authStore.user.name }}</span>
-    </summary>
-    <ul class="menu dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-sm">
-      <li>
-        <NuxtLink to="/signout">
-          <Icon
-            size="20"
-            class="text-(--btn-fg)"
-            :name="appStore.icons.logout"
-          />
-          <span class="text-(--btn-fg)">Sign Out</span>
-        </NuxtLink>
-      </li>
-    </ul>
-  </details>
+    </div>
+    <span>{{ authStore.user.name }}</span>
+  </AppDropdown>
   <button
     v-else
     :disabled="authStore.loading"
