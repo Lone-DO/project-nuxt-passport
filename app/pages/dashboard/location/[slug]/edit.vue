@@ -46,15 +46,10 @@ effect(() => {
     isReady.value = true;
   }
 });
-
-onUnmounted(() => {
-  /** onDestroy, remove global instance */
-  mapStore.newPin = null;
-});
 </script>
 
 <template>
-  <article id="dashboard-new" class="flex-1 max-w-md">
+  <article id="dashboard-location-edit" class="flex-1 max-w-md">
     <LocationFormBase
       v-if="isReady"
       :value="mapStore.newPin"

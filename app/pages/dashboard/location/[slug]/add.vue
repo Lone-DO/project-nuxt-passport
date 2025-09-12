@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import type { NominatimResult } from '~/lib/types';
 
-import { CENTER_GERMANY, EDITING_ROUTES, NEW_FORM_LOCATION_LOG_FIELDS } from '~/lib/constants';
+import { CENTER_GERMANY, NEW_FORM_LOCATION_LOG_FIELDS } from '~/lib/constants';
 import { InsertLocationLog } from '~/lib/db/schema';
 
 const [long, lat] = CENTER_GERMANY as [number, number];
@@ -35,13 +35,7 @@ function syncSelectedLocation(result: NominatimResult) {
     zoom: 12,
   };
 }
-/** TODO: Centralize Logic as reusable */
-onBeforeRouteLeave((to) => {
-  if (!EDITING_ROUTES.has(to.name as string)) {
-    /** onDestroy, remove global instance */
-    mapStore.newPin = null;
-  }
-});
+
 onMounted(() => {
   /** onMount, stage global instance */
   mapStore.newPin = {

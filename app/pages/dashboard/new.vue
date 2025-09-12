@@ -29,13 +29,9 @@ function syncSelectedLocation(result: NominatimResult) {
     long: Number(result.lon),
     lat: Number(result.lat),
     centerMap: true,
+    zoom: 5,
   };
 }
-
-onUnmounted(() => {
-  /** onDestroy, remove global instance */
-  mapStore.newPin = null;
-});
 onMounted(() => {
   /** onMount, stage global instance */
   mapStore.newPin = {
@@ -44,6 +40,8 @@ onMounted(() => {
     description: '',
     long,
     lat,
+    centerMap: true,
+    zoom: 5,
   };
   isReady.value = true;
 });
