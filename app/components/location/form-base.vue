@@ -22,7 +22,6 @@ const submitted = ref(false);
 const submitError = ref<string | null>('');
 
 /** Handlers */
-
 const { handleSubmit, errors, meta, setErrors, setFieldValue, controlledValues } = useForm({
   validationSchema: toTypedSchema($props.schema),
   /** Stage initial values to prevent form dirty during init */
@@ -92,6 +91,7 @@ effect(() => {
     :cancel-to
     :controlled-values
     :fields
+    :value
     :submit-label
     :submit-icon
     @submit="onSubmit"
