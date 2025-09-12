@@ -3,8 +3,8 @@ import type { EventHandlerRequest, H3Event } from 'h3';
 import sendZodError from '~/utils/send-zod-error';
 
 import { auth } from '../auth';
-import { findLocationByName, findLocationBySlug } from './queries';
-import { InsertLocation } from './schema';
+import { findLocationByName, findLocationBySlug, findLocationLogByName } from './queries';
+import { InsertLocation, InsertLocationLog } from './schema';
 
 export async function validateUserSession(event: H3Event<EventHandlerRequest>) {
   try {
@@ -40,6 +40,16 @@ export async function validateLocationPayload(event: H3Event<EventHandlerRequest
   /** Else continue */
   return result.data;
 }
+export async function validateLocationLogPayload(event: H3Event<EventHandlerRequest>) {
+/** Validate submitted Data matches location SCHEMA */
+  const result = await readValidatedBody(event, InsertLocationLog.safeParse);
+  /** IF submitted Data is invalid, return errors to form */
+  if (!result.success) {
+    return sendZodError(event, result.error);
+  }
+  /** Else continue */
+  return result.data;
+}
 
 export async function validateUniqueLocationName(name: string, id: number, slug?: string) {
   /** Verify that location.name is UNIQUE */
@@ -54,6 +64,19 @@ export async function validateUniqueLocationName(name: string, id: number, slug?
   return true;
 }
 
+export async function validateUniqueLocationLogName(name: string, userId: number, locationId: number) {
+  /** Verify that locationLog.name is UNIQUE */
+  const found = await findLocationLogByName(name, userId, locationId);
+  if (found) {
+    throw createError({
+      status: 409,
+      statusMessage: 'Invalid Log Name',
+      data: { name: `A log with that name already exist under target location` },
+    });
+  }
+  return true;
+}
+
 export async function validateLocationOwnership(name: string, id: number) {
   /** Verify that location.name is UNIQUE */
   const found = await findLocationBySlug(name, Number(id));
@@ -63,5 +86,5 @@ export async function validateLocationOwnership(name: string, id: number) {
       statusMessage: 'Location not Found',
     });
   }
-  return true;
+  return found;
 }

@@ -5,8 +5,8 @@ import type { Field, Icons } from './types';
 export const CENTER_GERMANY: LngLatLike = [10.4541194, 51.1642292];
 
 export const NAVIGATION_BASE_ITEMS = new Set(['dashboard', 'dashboard-new']);
-export const NAVIGATION_CURRENT_ITEMS = new Set(['dashboard-location-slug', 'dashboard-location-slug-edit', 'dashboard-location-slug-new']);
-export const EDITING_ROUTES = new Set(['dashboard-new', 'dashboard-location-slug-edit', 'dashboard-location-slug-new']);
+export const NAVIGATION_CURRENT_ITEMS = new Set(['dashboard-location-slug', 'dashboard-location-slug-edit', 'dashboard-location-slug-add']);
+export const EDITING_ROUTES = new Set(['dashboard-new', 'dashboard-location-slug-edit', 'dashboard-location-slug-add']);
 export const LIGHT_MODE_ICONS: Icons = {
   add: 'majesticons:map-marker-plus',
   addPath: 'majesticons:map-marker-path',
@@ -65,5 +65,15 @@ export const NEW_FORM_LOCATION_LOG_FIELDS: Field[] = [
     key: 'description',
     label: 'Description',
     type: 'text',
+  },
+  {
+    key: 'startedAt',
+    label: 'Started At',
+    type: 'date',
+  },
+  {
+    key: 'endedAt',
+    label: 'Ended At',
+    type: 'date',
   },
 ];
