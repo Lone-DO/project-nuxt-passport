@@ -10,7 +10,7 @@ const addingNewLocation = computed(() => EDITING_ROUTES.has(route.name as string
 
 function syncCords(clickEvt: MglEvent<'dblclick'>) {
   if (mapStore.newPin) {
-    mapStore.syncNewPinCoords(clickEvt.event.lngLat);
+    mapStore.syncNewPinCoords(clickEvt.event.lngLat, true);
   }
 }
 </script>
@@ -18,9 +18,9 @@ function syncCords(clickEvt: MglEvent<'dblclick'>) {
 <template>
   <LazyClientOnly>
     <template #fallback>
-      <section class="skeleton " />
+      <section class="skeleton flex-1" />
     </template>
-    <section id="map-client">
+    <section id="map-client" class="flex-1">
       <MglMap
         :map-style="mapStore.style"
         :center="mapStore.center"

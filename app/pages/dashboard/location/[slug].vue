@@ -54,7 +54,7 @@ const onDelete = handleSubmit(async () => {
 </script>
 
 <template>
-  <article id="dashboard-location-slug" class="max-w-md flex flex-col gap-2">
+  <article id="dashboard-location-slug" class="flex flex-1 flex-col max-w-md gap-2">
     <span v-if="isLoading" class="loading loading-spinner loading-md" />
     <span
       v-if="!isLoading && errorMessage"
@@ -80,7 +80,7 @@ const onDelete = handleSubmit(async () => {
         <NuxtLink
           class="btn btn-neutral mt-1"
           :to="{
-            name: 'dashboard-location-slug-new',
+            name: 'dashboard-location-slug-add',
             params: {
               slug: $route.params.slug,
             },

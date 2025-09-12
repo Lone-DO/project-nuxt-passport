@@ -61,7 +61,7 @@ effect(() => {
         id: 'link-location-new',
         name: 'Add Location Log',
         to: {
-          name: 'dashboard-location-slug-new',
+          name: 'dashboard-location-slug-add',
           params: {
             slug: $route.params.slug,
           },
@@ -82,8 +82,8 @@ effect(() => {
         'flex-col': isLocationListPage,
       }"
     >
-      <NuxtPage class="flex-1" />
-      <MapClient class="flex-1" />
+      <NuxtPage />
+      <MapClient />
     </div>
   </section>
 </template>
