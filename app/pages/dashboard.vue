@@ -61,7 +61,7 @@ effect(() => {
         id: 'link-location-new',
         name: 'Add Location Log',
         to: {
-          name: 'dashboard-location-slug-new',
+          name: 'dashboard-location-slug-add',
           params: {
             slug: $route.params.slug,
           },

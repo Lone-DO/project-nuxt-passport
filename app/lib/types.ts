@@ -33,7 +33,11 @@ export type MapPin = {
   slug?: string;
   to?: RouteLocationRaw;
   toLabel?: string;
+  startedAt?: number;
+  endedAt?: number;
 } & LatLongPin;
+
+export type MapPinExtended = { centerMap?: boolean; zoom?: number } & MapPin;
 
 export type Icons = {
   add: string;
@@ -77,4 +81,10 @@ export type NavigationItem = {
   href?: string;
   to?: RouteLocationRaw;
   mapPin?: location;
+};
+
+export type Field = {
+  key: string;
+  label: string;
+  type: 'text' | 'textarea' | 'date';
 };

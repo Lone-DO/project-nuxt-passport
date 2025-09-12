@@ -10,7 +10,7 @@ const addingNewLocation = computed(() => EDITING_ROUTES.has(route.name as string
 
 function syncCords(clickEvt: MglEvent<'dblclick'>) {
   if (mapStore.newPin) {
-    mapStore.syncNewPinCoords(clickEvt.event.lngLat);
+    mapStore.syncNewPinCoords(clickEvt.event.lngLat, true);
   }
 }
 </script>

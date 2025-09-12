@@ -23,8 +23,8 @@ const isActive = computed(() => route.fullPath === $props.href);
   >
     <NuxtLink
       :to="href || to || '#'"
-      class="btn p-3"
-      :class="[{ 'bg-base-300': isActive, 'justify-start': showLabel, 'justify-center': !showLabel }]"
+      class="btn p-3 justify-start"
+      :class="[{ 'bg-base-300': isActive }]"
     >
       <Icon
         :name="iconName"

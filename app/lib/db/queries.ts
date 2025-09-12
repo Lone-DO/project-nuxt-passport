@@ -3,10 +3,10 @@ import type { DrizzleError } from 'drizzle-orm';
 import { and, eq } from 'drizzle-orm';
 import { customAlphabet } from 'nanoid';
 
-import type { InsertLocation } from './schema';
+import type { InsertLocation, InsertLocationLog } from './schema';
 
 import db from '../db';
-import { location } from './schema';
+import { location, locationLog } from './schema';
 
 export const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 5);
 
@@ -45,6 +45,11 @@ export async function findLocationByName(name: string, userId: number) {
     where: and(eq(location.name, name), eq(location.userId, userId)),
   });
 }
+export async function findLocationLogByName(name: string, userId: number, locationId: number) {
+  return db.query.locationLog.findFirst({
+    where: and(eq(locationLog.name, name), eq(locationLog.userId, userId), eq(locationLog.locationId, locationId)),
+  });
+}
 
 /** CRUD Methods */
 
@@ -67,6 +72,15 @@ export async function injectLocation(data: InsertLocation, slug: string, userId:
     }
     throw error;
   }
+}
+
+export async function injectLocationLog(data: InsertLocationLog, locationId: number, userId: number) {
+  const [created] = await db.insert(locationLog).values({
+    ...data,
+    locationId,
+    userId,
+  }).returning();
+  return created;
 }
 
 export async function deleteLocationBySlug(slug: string, userId: number) {

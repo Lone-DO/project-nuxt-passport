@@ -2,9 +2,9 @@ import type { MapInstance } from '@indoorequal/vue-maplibre-gl';
 import type { LngLat, LngLatBounds } from 'maplibre-gl';
 
 import type { location } from '~/lib/db/schema';
-import type { MapPin, NavigationItem } from '~/lib/types';
+import type { MapPin, MapPinExtended, NavigationItem } from '~/lib/types';
 
-import { CENTER_GERMANY } from '~/lib/constants';
+import { CENTER_GERMANY, EDITING_ROUTES } from '~/lib/constants';
 
 export const useMapStore = defineStore('useMapStore', () => {
   /** Settings */
@@ -32,7 +32,7 @@ export const useMapStore = defineStore('useMapStore', () => {
   /** Pins are set via effect in locationStore */
   const pins = ref<MapPin[]>([]);
   /** Shared New location instance */
-  const newPin = ref<MapPin & { centerMap?: boolean } | null>(null);
+  const newPin = ref<MapPinExtended | null>(null);
   /** Currently Selected Pin */
   const selectedPin = ref<MapPin | null>(null);
 
@@ -84,9 +84,20 @@ export const useMapStore = defineStore('useMapStore', () => {
     }, { immediate: true });
   });
 
-  function flyTo(pin?: MapPin) {
+  onBeforeRouteLeave((to) => {
+    if (!EDITING_ROUTES.has(to.name as string)) {
+    /** onDestroy, remove global instance */
+      newPin.value = null;
+      zoom.value = 5;
+    }
+  });
+
+  function flyTo(pin?: MapPinExtended) {
     if (!mapClient || !pin) {
       return null;
+    }
+    if (pin.zoom) {
+      zoom.value = pin.zoom;
     }
     return mapClient.map?.flyTo({
       center: [pin.long as number, pin.lat as number],
@@ -108,12 +119,13 @@ export const useMapStore = defineStore('useMapStore', () => {
     }
   }
   /** Used for `/new` page, via onDbClick && onDrag events in MapClient */
-  function syncNewPinCoords(lngLat: LngLat) {
+  function syncNewPinCoords(lngLat: LngLat, centerMap = false) {
     if (newPin.value) {
       newPin.value = {
         ...newPin.value,
         long: lngLat.lng,
         lat: lngLat.lat,
+        centerMap,
       };
     }
   }

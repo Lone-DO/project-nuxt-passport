@@ -1,5 +1,7 @@
-<script lang='ts' setup>
+<script lang='ts' setup generic='T extends LatLongPin'>
 import type { RouteLocationRaw } from 'vue-router';
+
+import type { Field, LatLongPin } from '~/lib/types';
 
 defineProps<{
   cancelTo: RouteLocationRaw;
@@ -9,6 +11,8 @@ defineProps<{
     lat?: string;
     long?: string;
   };
+  fields: Field[];
+  value: T;
   submitLabel: string;
   submitIcon: string;
   controlledValues: any;
@@ -26,19 +30,27 @@ const onSubmit = (...data: any[]) => $emit('submit', ...data);
     class="location-form flex flex-col gap-2"
     @submit.prevent="onSubmit"
   >
-    <AppFormField
-      name="name"
-      label="Name"
-      :error="errors.name"
-      :disabled="busy"
-    />
-    <AppFormField
-      name="description"
-      label="Description"
-      type="textarea"
-      :error="errors.description"
-      :disabled="busy"
-    />
+    <template
+      v-for="field in fields"
+      :key="field.key"
+    >
+      <AppFormField
+        v-if="['text', 'textarea'].includes(field.type)"
+        :name="field.key"
+        :label="field.label"
+        :type="field.type"
+        :error="errors[field.key as keyof object]"
+        :disabled="busy"
+      />
+      <AppDateFormField
+        v-if="field.type === 'date'"
+        :name="field.key"
+        :label="field.label"
+        :value="value?.[field.key as keyof object]"
+        :error="errors[field.key as keyof object]"
+        :disabled="busy"
+      />
+    </template>
     <LocationCoordinatesField :lat="controlledValues.lat" :long="controlledValues.long" />
     <div class="flex justify-end gap-2">
       <NuxtLink
