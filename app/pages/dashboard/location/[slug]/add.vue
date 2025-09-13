@@ -4,8 +4,8 @@ import type { NominatimResult } from '~/lib/types';
 import { CENTER_GERMANY, NEW_FORM_LOCATION_LOG_FIELDS } from '~/lib/constants';
 import { InsertLocationLog } from '~/lib/db/schema';
 
+const $emit = defineEmits(['submitted']);
 const [long, lat] = CENTER_GERMANY as [number, number];
-
 const { $csrfFetch } = useNuxtApp();
 const mapStore = useMapStore();
 const appStore = useAppStore();
@@ -23,6 +23,7 @@ function onSubmit(values: InsertLocationLog) {
 function onSubmitted() {
   /** TODO: After submitting, redirect user to newly created item page (/dashboard/:locationID) */
   navigateTo(backLink.value);
+  $emit('submitted');
 }
 function syncSelectedLocation(result: NominatimResult) {
   mapStore.newPin = {
@@ -32,7 +33,6 @@ function syncSelectedLocation(result: NominatimResult) {
     long: Number(result.lon),
     lat: Number(result.lat),
     centerMap: true,
-    zoom: 12,
   };
 }
 
@@ -47,7 +47,6 @@ onMounted(() => {
     startedAt: new Date().getTime(),
     endedAt: new Date().getTime(),
     centerMap: true,
-    zoom: 12,
   };
   isReady.value = true;
 });

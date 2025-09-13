@@ -4,11 +4,16 @@ import type { LngLat, LngLatBounds } from 'maplibre-gl';
 import type { location } from '~/lib/db/schema';
 import type { MapPin, MapPinExtended, NavigationItem } from '~/lib/types';
 
-import { CENTER_GERMANY, EDITING_ROUTES } from '~/lib/constants';
+import { CENTER_GERMANY, NAVIGATION_BASE_ITEMS, READ_ROUTES } from '~/lib/constants';
 
 export const useMapStore = defineStore('useMapStore', () => {
+  /** General */
+  let mapClient: MapInstance;
+  const $route = useRoute();
+  const currentSlug = computed(() => $route.params.slug);
+
   /** Settings */
-  const zoom = ref(5);
+  const zoom = computed(() => NAVIGATION_BASE_ITEMS.has($route.name as string) ? 5 : 10);
   const speed = ref(0.8);
   const boundOpts = {
     padding: 60,
@@ -24,11 +29,7 @@ export const useMapStore = defineStore('useMapStore', () => {
    * OR enabled when triggered by Navigation or Dashboard Items
    */
   let enableZoom: boolean = true;
-  /** General */
-  const route = useRoute();
-  const currentSlug = computed(() => route.params.slug);
 
-  let mapClient: MapInstance;
   /** Pins are set via effect in locationStore */
   const pins = ref<MapPin[]>([]);
   /** Shared New location instance */
@@ -63,8 +64,8 @@ export const useMapStore = defineStore('useMapStore', () => {
     });
     effect(() => {
       /** Targeted Animation onHover events */
-      /** * ONLY Enable Animations while on Root Dashboard */
-      if (route.name !== 'dashboard') {
+      /** * ONLY Enable Animations while on Read Only Pages */
+      if (!READ_ROUTES.has($route.name as string)) {
         return;
       }
 
@@ -84,20 +85,9 @@ export const useMapStore = defineStore('useMapStore', () => {
     }, { immediate: true });
   });
 
-  onBeforeRouteLeave((to) => {
-    if (!EDITING_ROUTES.has(to.name as string)) {
-    /** onDestroy, remove global instance */
-      newPin.value = null;
-      zoom.value = 5;
-    }
-  });
-
   function flyTo(pin?: MapPinExtended) {
     if (!mapClient || !pin) {
       return null;
-    }
-    if (pin.zoom) {
-      zoom.value = pin.zoom;
     }
     return mapClient.map?.flyTo({
       center: [pin.long as number, pin.lat as number],
@@ -134,11 +124,10 @@ export const useMapStore = defineStore('useMapStore', () => {
     if (!pin?.slug && !pin?.id) {
       return false;
     }
-
     if (pin.slug && currentSlug.value) {
       return pin.slug === currentSlug.value;
     }
-    return selectedPin.value?.id === (pin?.id as number);
+    return selectedPin.value?.id ? selectedPin.value?.id === (pin?.id as number) : false;
   }
 
   return {

@@ -17,7 +17,7 @@ const coordinates = computed<LngLatLike>(() => {
   >
     <template #marker>
       <div
-        class="tooltip tooltip-top tooltip-open text-warning"
+        class="tooltip tooltip-top tooltip-open text-warning z-50"
         data-tip="Drag to your desired location"
       >
         <Icon

@@ -24,7 +24,7 @@ const coordinates = computed<LngLatLike>(() => [$props.pin?.long || 0, $props.pi
       >
         <Icon
           size="30"
-          name="majesticons:map-marker"
+          :name="pin.icon || 'majesticons:map-marker'"
           :class="{ 'text-secondary': !isSelected, 'text-accent': isSelected }"
         />
       </div>

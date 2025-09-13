@@ -1,4 +1,4 @@
-import type { locationWithLogs } from '~/lib/db/schema';
+import type { locationLog, locationWithLogs } from '~/lib/db/schema';
 import type { MapPin, NavigationItem } from '~/lib/types';
 
 import { NAVIGATION_BASE_ITEMS, NAVIGATION_CURRENT_ITEMS } from '~/lib/constants';
@@ -7,9 +7,14 @@ import { useMapStore } from './map';
 
 export const useLocationStore = defineStore('useLocationStore', () => {
   const $route = useRoute();
+  const appStore = useAppStore();
   const mapStore = useMapStore();
   const navigationStore = useNavigationStore();
-  const locationUrlWithSlug = computed(() => `/api/locations/${$route.params?.slug || ''}`);
+  const currentSlug = computed<string>(() => $route.params.slug as string);
+  const currentLogId = computed<number>(() => $route.params?.id as unknown as number);
+  const locationUrlWithSlug = computed<string>(() => `/api/locations/${currentSlug.value}`);
+  const locationUrlWithId = computed<string>(() => `/api/locations/${currentSlug.value}/logs/${currentLogId.value}`);
+  /** API Helpers */
 
   const {
     data: currentItem,
@@ -22,41 +27,92 @@ export const useLocationStore = defineStore('useLocationStore', () => {
     immediate: false,
   });
   const {
+    data: currentLog,
+    error: currentLogError,
+    status: currentLogStatus,
+    refresh: refreshCurrentLog,
+  } = useFetch<locationLog>(locationUrlWithId, {
+    lazy: true, // Don't force First Render to wait on data
+    watch: false, // Handler must be propagated manually
+    immediate: false,
+  });
+  const {
     data: locations,
     status: itemsStatus,
     refresh: refreshItems,
-  } = useFetch('/api/locations', {
+  } = useFetch<locationWithLogs[]>('/api/locations', {
     lazy: true,
   });
   /** Sort locations Alphabetically */
-  const items = computed(() => locations.value?.sort((a, b) => a.name.localeCompare(b.name)));
+  const items = computed(() => sortDataByKey('name', (locations.value || [])));
+  /** Unpacking Helpers */
+  function unpackLocations() {
+    mapStore.pins = [];
+    navigationStore.items = [];
+    const initialData = { navItems: <NavigationItem[]>[], mapPins: <MapPin[]>[] };
+    const { navItems, mapPins } = !items.value
+      ? initialData
+      : items.value.reduce((data, location) => {
+          const mapPin = {
+            ...location,
+            to: { name: 'dashboard-location-slug', params: { slug: location?.slug } },
+            toLabel: 'View',
+          };
+          data.navItems.push({
+            id: location.id,
+            name: location.name,
+            icon: '',
+            to: { name: 'dashboard-location-slug', params: { slug: location?.slug } },
+            mapPin,
+          });
+          data.mapPins.push(mapPin);
+          return data;
+        }, initialData);
+
+    navigationStore.items = navItems;
+    mapStore.pins = mapPins;
+  }
+
+  function unpackLogs() {
+    mapStore.pins = [];
+    navigationStore.items = [];
+    if (!currentItem.value) {
+      return;
+    }
+    const initialData = { navItems: <NavigationItem[]>[], mapPins: <MapPin[]>[] };
+    const sorted = sortDataByKey('startedAt', currentItem.value.locationLogs) || [];
+    const { navItems, mapPins } = (!currentItem.value?.locationLogs?.length || !currentSlug.value)
+      ? initialData
+      : (sorted).reduce((data, log) => {
+          const to = { name: 'dashboard-location-slug-logs-id', params: { slug: currentSlug.value, id: log.id } };
+          const mapPin = {
+            ...log,
+            to,
+            toLabel: 'View Log',
+            slug: '',
+            icon: appStore.icons.pin,
+          };
+          data.navItems.push({
+            id: log.id,
+            name: log.name,
+            icon: appStore.icons.pin,
+            to,
+            mapPin,
+          });
+          data.mapPins.push(mapPin);
+          return data;
+        }, initialData);
+
+    navigationStore.items = navItems;
+    mapStore.pins = [...mapPins, currentItem.value];
+  }
 
   effect(() => {
     if (items.value && NAVIGATION_BASE_ITEMS.has($route.name as string)) {
-      const navItems: NavigationItem[] = [];
-      const mapPins: MapPin[] = [];
-      items.value.forEach((location) => {
-        const mapPin = {
-          ...location,
-          to: { name: 'dashboard-location-slug', params: { slug: location?.slug } },
-          toLabel: 'View',
-        };
-        navItems.push({
-          id: location.id,
-          name: location.name,
-          icon: '',
-          to: { name: 'dashboard-location-slug', params: { slug: location?.slug } },
-          mapPin,
-        });
-        mapPins.push(mapPin);
-      });
-      navigationStore.items = navItems;
-      navigationStore.loading = false;
-      mapStore.pins = mapPins;
+      unpackLocations();
     }
     else if (currentItem.value && NAVIGATION_CURRENT_ITEMS.has($route.name as string)) {
-      navigationStore.items = [];
-      mapStore.pins = [currentItem.value];
+      unpackLogs();
     }
     navigationStore.loading = itemsStatus.value === 'pending';
   });
@@ -65,10 +121,19 @@ export const useLocationStore = defineStore('useLocationStore', () => {
     items,
     itemsStatus,
     refreshItems,
-    currentItem,
-    currentItemStatus,
-    currentItemError,
-    refreshCurrentItem,
     locationUrlWithSlug,
+    locationUrlWithId,
+    /** Location */
+    currentItem,
+    currentItemError,
+    currentItemStatus,
+    currentSlug,
+    refreshCurrentItem,
+    /** LocationLog */
+    currentLog,
+    currentLogId,
+    currentLogError,
+    currentLogStatus,
+    refreshCurrentLog,
   };
 });

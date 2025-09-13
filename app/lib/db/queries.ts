@@ -86,6 +86,9 @@ export async function injectLocationLog(data: InsertLocationLog, locationId: num
 export async function deleteLocationBySlug(slug: string, userId: number) {
   return db.delete(location).where(and(eq(location.slug, slug), eq(location.userId, userId))).returning();
 }
+export async function deleteLocationLogById(logId: number, locationId: number, userId: number) {
+  return db.delete(locationLog).where(and(eq(locationLog.id, logId), eq(locationLog.locationId, locationId), eq(locationLog.userId, userId))).returning();
+}
 
 export async function updateLocationBySlug(data: InsertLocation, oldSlug: string, slug: string, userId: number) {
   try {
@@ -110,6 +113,11 @@ export async function findLocation(userId: number, slugId: string) {
     with: {
       locationLogs: true,
     },
+  });
+}
+export async function findLocationLog(userId: number, locationId: number, logId: number) {
+  return db.query.locationLog.findFirst({
+    where: and(eq(locationLog.userId, userId), eq(locationLog.locationId, locationId), eq(locationLog.id, logId)),
   });
 }
 export async function findLocations(userId: number) {
