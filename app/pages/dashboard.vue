@@ -1,17 +1,28 @@
 <script setup lang="ts">
-import { NAVIGATION_BASE_ITEMS, NAVIGATION_CURRENT_ITEMS } from '~/lib/constants';
+import { EDITING_ROUTES, NAVIGATION_BASE_ITEMS, NAVIGATION_CURRENT_ITEMS } from '~/lib/constants';
 
 const locationStore = useLocationStore();
 const navigationStore = useNavigationStore();
+const mapStore = useMapStore();
 const $route = useRoute();
-const isLocationListPage = computed(() => $route.name === 'dashboard');
+const isEditingPage = computed(() => EDITING_ROUTES.has($route.name as string));
 
 const { icons } = storeToRefs(useAppStore());
 const { currentItem, currentItemStatus } = storeToRefs(locationStore);
 onMounted(() => {
-  if (!isLocationListPage.value) {
+  if (!isEditingPage.value) {
     /** WHEN user initially loads on page beyond the Location List, Force fetch */
     locationStore.refreshItems();
+  }
+});
+
+onBeforeRouteUpdate((to) => {
+  if (!EDITING_ROUTES.has(to.name as string) && mapStore.newPin) {
+    /** onDestroy, remove global instance */
+    mapStore.newPin = null;
+  }
+  if (!NAVIGATION_CURRENT_ITEMS.has(to.name as string)) {
+    locationStore.currentItem = undefined;
   }
 });
 
@@ -46,7 +57,7 @@ effect(() => {
             slug: $route.params.slug,
           },
         },
-        icon: icons.value.pin,
+        icon: icons.value.mark,
       }, {
         id: 'link-location-edit',
         name: 'Edit Location',
@@ -79,10 +90,10 @@ effect(() => {
     <div
       class="flex-1 flex justify-center p-4 gap-4 w-16"
       :class="{
-        'flex-col': isLocationListPage,
+        'flex-col': !isEditingPage,
       }"
     >
-      <NuxtPage />
+      <NuxtPage :class="{ 'max-w-md': isEditingPage, 'flex-1': isEditingPage }" />
       <MapClient />
     </div>
   </section>

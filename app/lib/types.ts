@@ -31,19 +31,21 @@ export type MapPin = {
   name: string;
   description: string | null;
   slug?: string;
+  icon?: string;
   to?: RouteLocationRaw;
   toLabel?: string;
   startedAt?: number;
   endedAt?: number;
 } & LatLongPin;
 
-export type MapPinExtended = { centerMap?: boolean; zoom?: number } & MapPin;
+export type MapPinExtended = { centerMap?: boolean } & MapPin;
 
 export type Icons = {
   add: string;
   addPath: string;
   delete: string;
   map: string;
+  mark: string;
   pin: string;
   pointerEvent: string;
   logout: string;

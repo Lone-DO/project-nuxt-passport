@@ -5,8 +5,16 @@ import type { Field, Icons } from './types';
 export const CENTER_GERMANY: LngLatLike = [10.4541194, 51.1642292];
 
 export const NAVIGATION_BASE_ITEMS = new Set(['dashboard', 'dashboard-new']);
-export const NAVIGATION_CURRENT_ITEMS = new Set(['dashboard-location-slug', 'dashboard-location-slug-edit', 'dashboard-location-slug-add']);
-export const EDITING_ROUTES = new Set(['dashboard-new', 'dashboard-location-slug-edit', 'dashboard-location-slug-add']);
+export const NAVIGATION_CURRENT_ITEMS = new Set(['dashboard-location-slug', 'dashboard-location-slug-edit', 'dashboard-location-slug-add', 'dashboard-location-slug-logs-id', 'dashboard-location-slug-logs-id-edit']);
+export const NAVIGATION_LOG_ITEMS = new Set(['dashboard-location-slug-logs-id', 'dashboard-location-slug-logs-id-edit']);
+export const EDITING_ROUTES = new Set([
+  'dashboard-new',
+  'dashboard-location-slug-edit',
+  'dashboard-location-slug-add',
+  'dashboard-location-slug-logs-id-edit',
+]);
+export const READ_ROUTES = new Set(['dashboard', 'dashboard-location-slug', 'dashboard-location-slug-logs-id']);
+/** Icons */
 export const LIGHT_MODE_ICONS: Icons = {
   add: 'majesticons:map-marker-plus',
   addPath: 'majesticons:map-marker-path',
@@ -17,7 +25,8 @@ export const LIGHT_MODE_ICONS: Icons = {
     left: 'majesticons:arrow-circle-left',
     right: 'majesticons:arrow-circle-right',
   },
-  pin: 'majesticons:map-simple-marker',
+  pin: 'majesticons:pin',
+  mark: 'majesticons:map-simple-marker',
   pointerEvent: 'majesticons:hand-pointer-event',
   search: 'majesticons:search-circle',
   searchPin: 'majesticons:map-simple-destination',
@@ -34,7 +43,8 @@ export const DARK_MODE_ICONS: Icons = {
     left: 'majesticons:arrow-circle-left-line',
     right: 'majesticons:arrow-circle-right-line',
   },
-  pin: 'majesticons:map-simple-marker-line',
+  pin: 'majesticons:pin',
+  mark: 'majesticons:map-simple-marker-line',
   pointerEvent: 'majesticons:hand-pointer-event-line',
   search: 'majesticons:search-circle-line',
   searchPin: 'majesticons:map-simple-destination-line',
@@ -42,6 +52,7 @@ export const DARK_MODE_ICONS: Icons = {
   settingsSave: 'majesticons:settings-cog-check-line',
 };
 
+/** Form Fields */
 export const NEW_FORM_LOCATION_FIELDS: Field[] = [
   {
     key: 'name',

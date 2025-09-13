@@ -29,7 +29,6 @@ function syncSelectedLocation(result: NominatimResult) {
     long: Number(result.lon),
     lat: Number(result.lat),
     centerMap: true,
-    zoom: 5,
   };
 }
 onMounted(() => {
@@ -41,7 +40,6 @@ onMounted(() => {
     long,
     lat,
     centerMap: true,
-    zoom: 5,
   };
   isReady.value = true;
 });

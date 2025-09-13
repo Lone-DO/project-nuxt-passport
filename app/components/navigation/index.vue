@@ -40,7 +40,8 @@ onMounted(() => {
               <NavigationLocationItem
                 v-for="location in navStore.items"
                 :key="location.id"
-                :location
+                :type="locationStore.currentItem ? 'locationLog' : 'location'"
+                :item="location"
                 :collapsed
               />
             </template>
