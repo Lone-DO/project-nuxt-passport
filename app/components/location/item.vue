@@ -1,25 +1,52 @@
 <script setup lang='ts'>
-import type { location } from '~/lib/db/schema';
+import type { location, locationLog } from '~/lib/db/schema';
 
 const $props = defineProps<{
-  location: location;
+  type: 'location' | 'locationLog';
+  item: (location | locationLog) & { slug?: string; startedAt?: number; endedAt?: number };
 }>();
 
 const mapStore = useMapStore();
-const isSelected = computed(() => mapStore.isSelected($props.location));
+const locationStore = useLocationStore();
+const isSelected = computed(() => mapStore.isSelected($props.item));
+const to = computed(() => {
+  if ($props.type === 'locationLog') {
+    return {
+      name: 'dashboard-location-slug-logs-id',
+      params: {
+        slug: locationStore.currentItem?.slug || 'fallback',
+        id: $props.item.id,
+      },
+    };
+  }
+  return {
+    name: 'dashboard-location-slug',
+    params: {
+      slug: $props.item?.slug || 'fallback',
+    },
+  };
+});
 </script>
 
 <template>
   <NuxtLink
-    :to="{ name: 'dashboard-location-slug', params: { slug: location?.slug } }"
+    :to
     class="dashboard-location-item card-body cursor-pointer border"
     :class="{ 'border-transparent': !isSelected, 'border-accent': isSelected }"
-    @mouseenter="mapStore.syncPin(location, true)"
-    @mouseleave="mapStore.syncPin(location, false)"
+    @mouseenter="mapStore.syncPin(item, true)"
+    @mouseleave="mapStore.syncPin(item, false)"
   >
     <h2 class="card-title">
-      {{ location?.name }}
+      {{ item?.name }}
     </h2>
-    <p>{{ location?.description || '...' }}</p>
+    <p>{{ item?.description || '...' }}</p>
+    <template v-if="type === 'locationLog'">
+      <p v-if="item?.startedAt">
+        Started At: {{ new Date(item?.startedAt).toLocaleDateString() }}
+      </p>
+      <p v-if="item?.endedAt">
+        Ended At: {{ new Date(item?.endedAt).toLocaleDateString() }}
+      </p>
+    </template>
   </NuxtLink>
 </template>
