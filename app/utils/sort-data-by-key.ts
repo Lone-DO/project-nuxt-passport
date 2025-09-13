@@ -9,10 +9,10 @@ export function sortDataByKey(key: string, data: { [key: string]: any }[], direc
       return (isAscending) ? a[key].localeCompare(b?.[key]) : b[key].localeCompare(a[key]);
     }
     if (a?.[key] < b?.[key]) {
-      return isAscending ? 1 : -1;
+      return isAscending ? -1 : 1;
     }
     if (b?.[key] < a?.[key]) {
-      return isAscending ? -1 : 1;
+      return isAscending ? 1 : -1;
     }
     return 0;
   });

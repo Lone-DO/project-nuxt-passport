@@ -5,6 +5,8 @@ import type { NominatimResult } from '~/lib/types';
 import { NEW_FORM_LOCATION_FIELDS } from '~/lib/constants';
 import { InsertLocation } from '~/lib/db/schema';
 
+const $emit = defineEmits(['submitted']);
+
 const { $csrfFetch } = useNuxtApp();
 const appStore = useAppStore();
 const locationStore = useLocationStore();
@@ -21,7 +23,7 @@ async function onSubmit(values: InsertLocation) {
 function onSubmitted() {
   /** TODO: After submitting, redirect user to newly created item page (/dashboard/:locationID) */
   navigateTo({ name: 'dashboard-location-slug', params: { slug: submittedValues.value?.slug } });
-  locationStore.refreshCurrentItem();
+  $emit('submitted');
 }
 function syncSelectedLocation(result: NominatimResult) {
   mapStore.newPin = {
@@ -49,7 +51,7 @@ effect(() => {
 </script>
 
 <template>
-  <article id="dashboard-location-edit" class="flex-1 max-w-md">
+  <article id="dashboard-location-edit">
     <LocationFormBase
       v-if="isReady"
       :value="mapStore.newPin"

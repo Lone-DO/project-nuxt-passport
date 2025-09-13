@@ -13,6 +13,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
   const currentSlug = computed<string>(() => $route.params.slug as string);
   const currentLogId = computed<number>(() => $route.params?.id as unknown as number);
   const locationUrlWithSlug = computed<string>(() => `/api/locations/${currentSlug.value}`);
+  const locationUrlWithId = computed<string>(() => `/api/locations/${currentSlug.value}/logs/${currentLogId.value}`);
   /** API Helpers */
 
   const {
@@ -30,7 +31,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
     error: currentLogError,
     status: currentLogStatus,
     refresh: refreshCurrentLog,
-  } = useFetch<locationLog>(`${locationUrlWithSlug.value}/logs/${currentLogId.value}`, {
+  } = useFetch<locationLog>(locationUrlWithId, {
     lazy: true, // Don't force First Render to wait on data
     watch: false, // Handler must be propagated manually
     immediate: false,
@@ -121,6 +122,7 @@ export const useLocationStore = defineStore('useLocationStore', () => {
     itemsStatus,
     refreshItems,
     locationUrlWithSlug,
+    locationUrlWithId,
     /** Location */
     currentItem,
     currentItemError,
