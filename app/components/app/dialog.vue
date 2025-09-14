@@ -14,7 +14,8 @@ const $slots = defineSlots<{
 
 const modal = useTemplateRef('modal');
 const showModal = () => modal.value?.showModal();
-effect(() => ($props.isOpen) ? showModal() : null);
+const closeModal = () => modal.value?.close();
+watch(() => $props.isOpen, bool => bool ? showModal() : closeModal());
 
 /** Mount Event Listeners */
 const onClose = () => $emits('onClosed');
@@ -48,9 +49,9 @@ onUnmounted(() => {
       </h3>
       <slot />
       <div class="modal-action">
-        <form method="dialog" class="flex gap-2">
+        <form class="flex gap-2" @submit.prevent>
           <!-- if there is a button in form, it will close the modal -->
-          <slot name="controls" />
+          <slot name="controls" v-bind="{ close: closeModal }" />
         </form>
       </div>
     </div>

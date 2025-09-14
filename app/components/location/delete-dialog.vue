@@ -1,24 +1,26 @@
 <script lang='ts' setup>
 import type { location } from '~/lib/db/schema';
 
-defineProps<{ location: location }>();
+withDefaults(defineProps<{ location: location; title?: string; description?: string }>(), {
+  description: 'Deleting this location will also delete all of the associated logs',
+});
 const $emit = defineEmits(['accept']);
 </script>
 
 <template>
   <AppDialog>
     <template #title>
-      Delete Location: {{ location.name }}
+      {{ title || `Delete Location: ${location.name}` }}
     </template>
     <div>
-      <p>Deleting this location will also delete all of the associated logs</p>
+      <p>{{ description }}</p>
       <i>This cannot be undone. Do you really want to do this?</i>
     </div>
-    <template #controls>
+    <template #controls="{ close }">
       <button class="btn btn-error" @click="$emit('accept')">
         Ja, Ich verstanden!
       </button>
-      <button class="btn btn-neutral">
+      <button class="btn btn-neutral" @click="close">
         Cancel
       </button>
     </template>
