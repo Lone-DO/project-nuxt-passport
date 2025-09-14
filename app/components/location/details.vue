@@ -22,7 +22,10 @@ const appStore = useAppStore();
 const isDeleting = ref(false);
 const deleteError = ref<string | null>('');
 const isLoading = computed(() => $props.status === 'pending' || isDeleting.value);
-const errorMessage = computed(() => $props.error?.statusMessage || deleteError.value);
+const errorMessage = computed(() => $props.error ? getFetchErrorMessage($props.error) : deleteError.value);
+effect(() => {
+  console.log({ error: $props.error });
+});
 /** Modal */
 const isModalOpen = ref(false);
 const dropdownItems: DropdownItem[] = [{
